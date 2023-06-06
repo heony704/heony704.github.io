@@ -1,9 +1,9 @@
 {
-  "name": "zoomkoding.com",
+  "name": "heony704.github.io",
   "private": true,
-  "description": "A neat blog theme for developers",
+  "description": "heony704's blog",
   "version": "3.0.0",
-  "author": "zoomkoding <zoomkoding@gmail.com>",
+  "author": "heony704 <heony704@gmail.com>",
   "dependencies": {
     "@mui/icons-material": "^5.1.0",
     "@mui/material": "^5.1.0",
@@ -31,7 +31,6 @@
     "prismjs": "^1.24.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-rotating-text": "^1.4.1",
     "sass": "^1.43.4",
     "typeface-montserrat": "^1.1.13"
   },
