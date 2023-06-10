@@ -17,7 +17,7 @@ function Utterances({ repo, path }) {
       repo,
       branch,
       theme: JSON.parse(storedIsDarkMode) ? 'photon-dark' : 'github-light',
-      label: 'comment',
+      label: '💬',
       async: true,
       'issue-term': 'pathname',
       crossorigin: 'anonymous',
