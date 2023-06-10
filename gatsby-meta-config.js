@@ -9,7 +9,7 @@ module.exports = {
       repo: `heony704/heony704.github.io`,
     },
   },
-  ga: '0', // Google Analytics Tracking ID
+  ga: 'UA-273267273-1', // Google Analytics Tracking ID
   author: {
     name: `이승헌`,
     bio: {
