@@ -6,11 +6,11 @@ import Bio from '../components/bio';
 
 function AboutPage({ data }) {
   const metaData = data.site.siteMetadata;
-  const { author, language } = metaData;
+  const { author } = metaData;
   return (
     <Layout>
       <Seo title="About" />
-      <Bio author={author} language={language} />
+      <Bio author={author} />
     </Layout>
   );
 }
@@ -23,7 +23,6 @@ export const pageQuery = graphql`
       siteMetadata {
         title
         description
-        language
         author {
           name
           bio {

@@ -1,7 +1,6 @@
 module.exports = {
   title: `🍯heony704`,
   description: `heony704: blog`,
-  language: `ko`, // `ko`, `en` => currently support versions for Korean and English
   siteUrl: `https://heony704.github.io`,
   ogImage: `/og-image.png`, // Path to your in the 'static' folder
   comments: {
