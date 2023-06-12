@@ -13,8 +13,11 @@ module.exports = {
   author: {
     name: `이승헌`,
     bio: {
-      role: `개발자`,
-      description: ['사람에 가치를 두는', '능동적으로 일하는', '이로운 것을 만드는'],
+      role: '프론트엔드 개발자',
+      description: [
+        '재밌고 효율적인 개발을 좋아합니다.',
+        '지식을 다시 찾아보기 위해, 공유하기 위해 만든 블로그입니다.',
+      ],
       thumbnail: 'sample.png', // Path to the image in the 'asset' folder
     },
     social: {
