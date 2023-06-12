@@ -1,18 +1,21 @@
 import React from 'react';
+import IconButtonBar from '../icon-button-bar';
 import './style.scss';
 
-function PageFooter({ author, githubUrl }) {
+function PageFooter({ author }) {
+  const { social, name } = author;
   return (
     <footer className="page-footer-wrapper">
-      <p className="page-footer">
-        © {new Date().getFullYear()}
-        &nbsp;
-        <a href={githubUrl}>{author}</a>
-        &nbsp;powered by
-        <a href="https://github.com/zoomKoding/zoomkoding-gatsby-blog">
-          &nbsp;zoomkoding-gatsby-blog
-        </a>
-      </p>
+      <div className="page-footer">
+        <div>
+          © {new Date().getFullYear()}
+          &nbsp;
+          {name}
+        </div>
+        <div className="social-links">
+          <IconButtonBar links={social} />
+        </div>
+      </div>
     </footer>
   );
 }

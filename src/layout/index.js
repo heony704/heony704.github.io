@@ -15,6 +15,7 @@ const Layout = ({ children }) => {
             name
             social {
               github
+              email
             }
           }
         }
@@ -27,10 +28,7 @@ const Layout = ({ children }) => {
     <div className="page-wrapper">
       <PageHeader siteTitle={title || `Title`} />
       <main className="page-content">{children}</main>
-      <PageFooter
-        author={author.name || `Author`}
-        githubUrl={author.social?.github || `https://www.github.com`}
-      />
+      <PageFooter author={author} />
       <ThemeSwitch />
     </div>
   );
