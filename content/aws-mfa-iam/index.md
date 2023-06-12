@@ -44,8 +44,8 @@ IAM 서비스에서 사용자를 추가한다.
 따라서 EC2 인스턴스 정보를 읽는 것과 해당 인스턴스에 연결하는 것만 가능하고 나머지는 다 제어하는 권한을 부여해야 한다.  
 직접 권한을 부여하는 방법도 있지만 난 이미 존재하는 정책을 적용해 사용자 그룹을 만들었다.
 
-> 1. AmazonEC2ReadOnlyAccess
-> 2. EC2InstanceConnect
+1. AmazonEC2ReadOnlyAccess
+2. EC2InstanceConnect
 
 방금 만든 사용자 그룹에 해당하는 사용자를 생성한다.
 

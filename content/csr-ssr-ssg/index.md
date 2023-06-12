@@ -85,9 +85,7 @@ SSG는 상호작용이 필요하지 않은 사이트에 적합하며, 정적 페
 
 ---
 
-참고
-
-https://dev.to/pahanperera/visual-explanation-and-comparison-of-csr-ssr-ssg-and-isr-34ea
+참고: https://dev.to/pahanperera/visual-explanation-and-comparison-of-csr-ssr-ssg-and-isr-34ea
 
 ```toc
 

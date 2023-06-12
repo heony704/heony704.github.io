@@ -127,8 +127,8 @@ React DOM Client 관련 API가 수정되었으며 이제 `react-dom`이 아닌 `
 - `ReactDOM.render` → `createRoot`
 - `ReactDOM.hydrate` → `hydrateRoot`
 
-- creatRoot: render하거나 unmount할 root를 만드는 새로운 메소드
-- hydrateRoot: 서버 렌더링 어플리케이션을 hydrate하는 새로운 메소드
+* creatRoot: render하거나 unmount할 root를 만드는 새로운 메소드
+* hydrateRoot: 서버 렌더링 어플리케이션을 hydrate하는 새로운 메소드
 
 이전의 루트 관리
 
