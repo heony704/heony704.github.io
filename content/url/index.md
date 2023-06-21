@@ -7,10 +7,10 @@ categories: web
 
 ## URL이란?
 
-Uniform Resource Locator, 웹에서 정해진 유일한 리소스의 주소
+Uniform Resource Locator  
+웹에서 정해진 유일한 리소스의 주소
 
-URL은 웹에 게시된 어떤 자원(리소스)를 찾기 위해서 브라우저에 의해 사용되는 메카니즘이다.
-
+URL은 웹에 게시된 어떤 자원(리소스)를 찾기 위해서 브라우저에 의해 사용되는 메카니즘이다.  
 각각의 URL은 유일한 리소스를 가리킨다.
 
 ## URL의 구조
@@ -31,7 +31,7 @@ URL은 웹에 게시된 어떤 자원(리소스)를 찾기 위해서 브라우�
 
 - 포트 번호
 - 표준 HTTP 포트를 사용한다면 포트 번호가 생략됨  
-  (HTTP의 경우 80 생략, HTTPS의 경우 443 생략)
+  HTTP의 경우 80 생략, HTTPS의 경우 443 생략
 
 ### Path
 
@@ -49,10 +49,10 @@ URL은 웹에 게시된 어떤 자원(리소스)를 찾기 위해서 브라우�
 
 ## URL과 URI 차이
 
-URI(Uniform Resource Identifier)는 인터넷의 리소스를 나타내는 유일한 주소다.
+URI(Uniform Resource Identifier)는 인터넷의 리소스를 나타내는 유일한 주소를 나타낸다.
 
 URL과 비슷하게 느껴졌다면 맞다.  
-URL은 URI 의 하위개념이다.
+URL은 URI의 하위개념이다.
 
 가장 흔한 URI가 URL이기 때문에 둘은 혼용되어 쓰이기도 한다.  
 참고로 하위 개념으로 URL 말고 URN(Uniform Resource Name)도 있다.

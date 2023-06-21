@@ -27,11 +27,11 @@ Promise 객체는 비동기 작업이 어떻게 될지에 대한 결과를 나�
 
 Promise는 다음 중 하나의 상태를 가진다.
 
-- 대기(pending): 이행하지도, 거부하지도 않은 초기 상태
-- 이행(fulfilled): 연산이 성공적으로 완료됨
-- 거부(rejected): 연산이 실패함
+- `대기(pending)`: 이행하지도, 거부하지도 않은 초기 상태
+- `이행(fulfilled)`: 연산이 성공적으로 완료됨
+- `거부(rejected)`: 연산이 실패함
 
-대기 상태에서 벗어나 이행 혹은 거부 상태가 됐다면, Promise가 처리(settled)됐다고 말한다.
+대기 상태에서 벗어나 이행 혹은 거부 상태가 됐다면, Promise가 `처리(settled)`됐다고 말한다.
 
 ![promise-flow.png](promise-flow.png)
 
@@ -93,10 +93,8 @@ async function asyncCall() {
 asyncCall();
 ```
 
-`async function`에서 `await` 키워드가 붙은 함수(Promise)가 이행되기 전까진 `await` 뒤의 코드로 넘어가지 않는다.
-
-이런 식으로 비동기 작업마다 `await`를 붙여 Promise의 `then`처럼 사용할 수 있다.
-
+`async function`에서 `await` 키워드가 붙은 함수(Promise)가 이행되기 전까진 `await` 뒤의 코드로 넘어가지 않는다.  
+이런 식으로 비동기 작업마다 `await`를 붙여 Promise의 `then`처럼 사용할 수 있다.  
 `async/await`의 목적은 여러 Promise의 동작을 동기스럽게 사용하는 것으로, Generator와 Promise를 묶는 것과 유사하다.
 
 ### async
@@ -170,8 +168,7 @@ const channel2 = await channelManager.create(category.id);
 await channel2.send(channelText);
 ```
 
-위 코드랑 아래 코드가 정확히 같게 동작하지는 않지만, 얼추 비슷하게 수정했다.
-
+위 코드랑 아래 코드가 정확히 같게 동작하지는 않지만, 얼추 비슷하게 수정했다.  
 한눈에 보기에도 `async/await`를 사용한 게 훨씬 간결하다.  
 앞으로 Promise를 사용할 땐 `async/await` 문법도 같이 사용하도록 하자.
 

@@ -37,9 +37,9 @@ d는 declaration, 선언을 의미한다.
 
 ## `d.ts` 선언파일 만드는 방법 (`d.ts` 파일 정의하기)
 
-1. 직접 index.d.ts 파일을 작성하거나
-2. tsconfig.json 파일에서 옵션설정해주기  
-   compilerOptions의 allowjs, declaration 등이 선언파일과 관련된 옵션
+1. 직접 `index.d.ts` 파일을 작성하거나
+2. `tsconfig.json` 파일에서 옵션설정해주기  
+   `compilerOptions`의 `allowjs`, `declaration` 등이 선언파일과 관련된 옵션
 
 외부 라이브러리를 사용하는 사용자 입장이라면 1번 방법대로 하고, 만약 라이브러리 개발자 입장이라면 1, 2 둘 중 하나를 선택할 수 있다.  
 2번 방법의 경우, 컴파일 시 `index.d.ts` 파일을 자동으로 생성해주는 방법이다.
