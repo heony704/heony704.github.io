@@ -1,0 +1,3 @@
+User-agent: *
+Sitemap: https://heony704.github.io/sitemap-index.xml
+Host: https://heony704.github.io
