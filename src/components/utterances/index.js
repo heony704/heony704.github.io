@@ -3,7 +3,7 @@ import './style.scss';
 import { getValueFromLocalStorage } from '../../utils/localStorage';
 
 const url = 'https://utteranc.es';
-const branch = 'main';
+const branch = 'master';
 
 const getTheme = () => (getValueFromLocalStorage('isDarkMode') ? 'photon-dark' : 'github-light');
 
