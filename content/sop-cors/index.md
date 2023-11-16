@@ -21,7 +21,7 @@ Same-Origin Policy
 
 두 URL의 프로토콜, 도메인 이름, 포트(명시한 경우) 가 모두 같아야 동일한 출처다.
 
-![url-structure.png](url-structure.png)
+![URL 구조](url-structure.png)
 
 `http://store.company.com`과 동일한 출처는 다음과 같다.
 
@@ -56,7 +56,11 @@ HTTP 헤더에 접근 권한도 없으면서 출처가 다른 자원에 접근�
 
 ---
 
-참고: [MDN 동일 출처 정책](https://developer.mozilla.org/ko/docs/Web/Security/Same-origin_policy), [MDN URL](https://xn--developer-9700b.mozilla.org/ko/docs/Learn/Common_questions/Web_mechanics/What_is_a_URL), [MDN 교차 출처 리소스 공유](https://developer.mozilla.org/ko/docs/Web/HTTP/CORS)
+참고
+
+- [MDN 동일 출처 정책](https://developer.mozilla.org/ko/docs/Web/Security/Same-origin_policy)
+- [MDN URL](https://xn--developer-9700b.mozilla.org/ko/docs/Learn/Common_questions/Web_mechanics/What_is_a_URL)
+- [MDN 교차 출처 리소스 공유](https://developer.mozilla.org/ko/docs/Web/HTTP/CORS)
 
 ```toc
 

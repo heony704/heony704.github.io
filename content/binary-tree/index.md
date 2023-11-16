@@ -43,7 +43,7 @@ categories: algorithm
 - 마지막 레벨 전까지 모든 노드가 채워져 있고,  
   마지막 레벨은 왼쪽부터 오른쪽까지 노드가 순서대로 채워져 있는 이진트리
 
-![binary-trees.png](binary-trees.png)
+![이진트리 그래프들](binary-trees.png)
 
 ## 이진트리 표현법
 
@@ -54,13 +54,13 @@ categories: algorithm
 모든 이진트리를 포화이진트리라고 가정하고 각 노드에 번호를 붙여서 그 번호를 배열의 인덱스로 삼아 노드의 데이터를 배열에 저장하는 방법이다.  
 완전이진트리가 아닌 일반적인 이진트리의 경우 메모리 낭비가 심해진다.
 
-![binary-tree-array.png](binary-tree-array.png)
+![완전이진트리와 경사이진트리의 배열 인덱스 비교](binary-tree-array.png)
 
 ### 링크 표현법
 
 포인터를 이용하여 부모노드가 자식노드를 가리키게 하는 방법이다.
 
-![binary-tree-link.png](binary-tree-link.png)
+![완전이진트리와 경사이진트리의 포인터 비교](binary-tree-link.png)
 
 ## 이진트리 순회
 

@@ -22,7 +22,7 @@ categories: web
 
 ## 인터넷이 동작하는 방법
 
-![internet-structure.png](internet-structure.png)
+![인터넷 구조](internet-structure.png)
 
 각 컴퓨터는 라우터라는 특수한 소형 컴퓨터에 연결됩니다.  
 라우터는 컴퓨터에서 보낸 메세지가 올바른 대상 컴퓨터에 최적의 경로로 도착할 수 있도록 중계 역할을 합니다.
@@ -44,7 +44,9 @@ ISP는 모두 함께 연결되는 몇몇 특수한 라우터를 관리하고 다
 
 ---
 
-참고: [인터넷은 어떻게 동작하는가?](https://developer.mozilla.org/ko/docs/Learn/Common_questions/Web_mechanics/How_does_the_Internet_work)
+참고
+
+- [인터넷은 어떻게 동작하는가?](https://developer.mozilla.org/ko/docs/Learn/Common_questions/Web_mechanics/How_does_the_Internet_work)
 
 ```toc
 

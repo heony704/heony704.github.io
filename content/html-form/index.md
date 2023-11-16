@@ -53,7 +53,10 @@ Form을 제출하기 위해서는 `<input>` 말고도 `<button>`을 사용할 �
 
 ---
 
-참고: [나의 첫 HTML 폼](https://developer.mozilla.org/ko/docs/Learn/Forms/Your_first_form), [`<form>`](https://developer.mozilla.org/ko/docs/Web/HTML/Element/form)
+참고
+
+- [나의 첫 HTML 폼](https://developer.mozilla.org/ko/docs/Learn/Forms/Your_first_form)
+- [`<form>`](https://developer.mozilla.org/ko/docs/Web/HTML/Element/form)
 
 ```toc
 

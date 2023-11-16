@@ -154,7 +154,9 @@ HTML 요소 안에서 많은 공백을 사용하거나 줄 바꿈을 사용해�
 
 ---
 
-참고: [HTML 시작하기](https://developer.mozilla.org/ko/docs/Learn/HTML/Introduction_to_HTML/Getting_started)
+참고
+
+- [HTML 시작하기](https://developer.mozilla.org/ko/docs/Learn/HTML/Introduction_to_HTML/Getting_started)
 
 ```toc
 

@@ -9,7 +9,7 @@ categories: web
 
 클라이언트 측에서 렌더링이 이루어지는 방식
 
-![csr.jpeg](csr.jpeg)
+![CSR 과정](csr.jpeg)
 
 Angular와 React와 같은 대부분의 웹 프레임워크가 지원하는 방식입니다.
 
@@ -37,7 +37,7 @@ CSR은 HTML 문서를 클라이언트 측에서 동적으로 렌더링하기 때
 
 서버 측에서 렌더링이 이루어지는 방식
 
-![ssr.jpeg](ssr.jpeg)
+![SSR 과정](ssr.jpeg)
 
 서버는 HTML, CSS, JavaScript 등의 파일을 렌더링한 후, 클라이언트에게 전달합니다.
 
@@ -59,7 +59,7 @@ SSR은 초기 로딩 속도가 빠르지만, 클라이언트 측에서의 상호
 
 정적 사이트 생성 방식
 
-![ssg.jpeg](ssg.jpeg)
+![SSG 과정](ssg.jpeg)
 
 서버에서 사이트를 미리 렌더링한 후, 클라이언트에게 전달합니다.
 
@@ -85,7 +85,9 @@ SSG는 상호작용이 필요하지 않은 사이트에 적합하며, 정적 페
 
 ---
 
-참고: https://dev.to/pahanperera/visual-explanation-and-comparison-of-csr-ssr-ssg-and-isr-34ea
+참고
+
+- [Visual Explanation and Comparison of CSR, SSR, SSG and ISR](https://dev.to/pahanperera/visual-explanation-and-comparison-of-csr-ssr-ssg-and-isr-34ea)
 
 ```toc
 

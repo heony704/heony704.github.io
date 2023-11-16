@@ -9,8 +9,8 @@ categories: html
 아이폰에서 사파리로 내가 만든 웹사이트를 접속하면 다른 여타 사이트들과 달리 상단바가 까맣게 표시되어서 매우 거슬렸다.
 
 <p style="display:flex">
-  <img src="safari-themecolor-black.jpg">
-  <img src="safari-themecolor-none.jpg">
+  <img src="safari-themecolor-black.jpg" alt="사파리 상단바가 까맣게 표시된 모습">
+  <img src="safari-themecolor-none.jpg" alt="사파리 상단바가 까맣지 않은 모습">
 </p>
 
 그래서 무엇이 문제인지 알아봤다.
@@ -34,20 +34,20 @@ categories: html
 라이트모드, 다크모드 둘 다 페이지의 배경색에 맞춰 색이 적용됐다.
 
 <p style="display:flex">
-  <img src="mypage-lightmode.jpg">
-  <img src="mypage-darkmode.jpg">
+  <img src="mypage-lightmode.jpg" alt="라이트모드의 웹사이트 모습">
+  <img src="mypage-darkmode.jpg" alt="다크모드의 웹사이트 모습">
 </p>
 
 지금부터 이렇게 된 이유에 대해 알아보자.
 
-## 사파리의 `웹 사이트 색조로 물들이기` 기능
+## 사파리의 웹 사이트 색조로 물들이기 기능
 
 아이폰의 사파리에는 `웹 사이트 색조로 물들이기` 기능이 있다. 웹 사이트 틸팅 기능이라고도 한다.  
 이 기능은 사파리에 접속했을 때 웹 사이트의 전체적인 색조를 파악한 후 상단바 등 기타 UI에 그 색조를 적용해 자연스럽게 보이도록 도와주는 기능이다.
 
 아이폰 설정에서 사파리 탭에 들어가 기능을 끄거나 켤 수 있다.
 
-![iphone-safari-setting.jpg](iphone-safari-setting.jpg)
+![아이폰 설정 화면](iphone-safari-setting.jpg)
 
 자세한 동작 원리는 모르겠지만 상단바를 어떤 색조로 물들일지는 다음에 의해 정해지는 것 같다.
 
@@ -59,7 +59,7 @@ categories: html
 이 기능이 켜져 있을 때만 사파리에서 테마 컬러를 판단해 상단바(를 포함한 다른 웹사이트 외의 UI) 색상을 바꿔주는 것이다.  
 차라리 `meta` 태그로 `theme-color`를 정해주지 않았다면 알아서 적당한 색조로 물들여주는데 `theme-color`를 검정색으로 정해놔서 부자연스러운 색으로 물들여진 것이다.
 
-## CRA의 `index.html` 파일
+## CRA의 index.html 파일
 
 그럼 왜 `theme-color`가 검정색으로 설정되어 있을까? 난 그런 적이 없다.
 
@@ -94,7 +94,9 @@ CRA로 리액트 웹 프로젝트를 구성하면 자동으로 `public` 폴더�
 
 ---
 
-참고: [TIME TO UPDATE YOUR THEME-COLOR META TAG FOR SAFARI](https://stuffandnonsense.co.uk/blog/time-to-update-your-theme-color-meta-tag-for-safari)
+참고
+
+- [TIME TO UPDATE YOUR THEME-COLOR META TAG FOR SAFARI](https://stuffandnonsense.co.uk/blog/time-to-update-your-theme-color-meta-tag-for-safari)
 
 ```toc
 

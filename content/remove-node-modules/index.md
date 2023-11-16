@@ -7,13 +7,13 @@ categories: git
 
 github에 프로젝트를 올릴 때 node_modules를 제외하고 올리는 방법입니다.
 
-## `.gitignore` 파일 만들기
+## .gitignore 파일 만들기
 
 `.gitignore` 파일은 Push할 때 무시할 파일 혹은 디렉토리를 적어놓은 파일입니다.  
 `.gitignore` 파일에 작성된 파일 혹은 디렉토리는 원격저장소에 저장되지 않습니다.  
 이 `.gitignore` 파일을 활용해서 `node_modules` 디렉토리는 물론 다른 파일들도 원격저장소에 저장되지 않도록 할 수 있습니다.
 
-![gitignore.png](gitignore.png)
+![gitignore 파일](gitignore.png)
 
 이런 식으로 작성하면 `node_modules` 디렉토리는 추적당하지 않습니다.
 

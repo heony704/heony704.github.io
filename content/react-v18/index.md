@@ -214,7 +214,7 @@ CSS-in-JS 라이브러리가 렌더링에 스타일을 삽입하는 성능 문�
 TypeScript를 사용한다면, `@types/react`와 `@types/react-dom` 디펜던시를 최신 버전으로 업데이트해야 합니다.  
 이제 컴포넌트의 prop들을 정의할 때 `children` prop을 명시적으로 나열해야 합니다.
 
-```jsx
+```tsx
 interface MyButtonProps {
   color: string;
   children?: React.ReactNode;

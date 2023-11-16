@@ -15,7 +15,7 @@ URL은 웹에 게시된 어떤 자원(리소스)를 찾기 위해서 브라우�
 
 ## URL의 구조
 
-![url-structure.png](url-structure.png)
+![URL 구조](url-structure.png)
 
 ### Protocol
 
@@ -59,7 +59,9 @@ URL은 URI의 하위개념이다.
 
 ---
 
-참고: [MDN URL](https://xn--developer-9700b.mozilla.org/ko/docs/Learn/Common_questions/Web_mechanics/What_is_a_URL)
+참고
+
+- [MDN URL](https://xn--developer-9700b.mozilla.org/ko/docs/Learn/Common_questions/Web_mechanics/What_is_a_URL)
 
 ```toc
 

@@ -15,7 +15,7 @@ React로 캐러셀을 만들어보자.
 
 백문이 불여일견. 애플 홈페이지에 들어가 보자.
 
-![apple-carousel.gif](apple-carousel.gif)
+![애플 홈페이지의 Carousel](apple-carousel.gif)
 
 이런 식으로
 
@@ -28,7 +28,7 @@ React로 캐러셀을 만들어보자.
 
 다양한 캐러셀들이 있지만 아래와 같이 간단한 모양의 캐러셀을 만들 것이다.
 
-![my-carousel.gif](my-carousel.gif)
+![내가 만든 Carousel](my-carousel.gif)
 
 내가 만들 캐러셀의 특징은 이렇다.
 
@@ -56,7 +56,7 @@ React로 캐러셀을 만들어보자.
 }
 ```
 
-![first-step.png](first-step.png)
+![만든 div의 모습](first-step.png)
 
 이제 이 네모 안에 사진들을 넣을 것이다.
 
@@ -114,20 +114,20 @@ React로 캐러셀을 만들어보자.
 }
 ```
 
-![second-step.png](second-step.png)
+![div에 사진이 나타난 모습](second-step.png)
 
 화면상에는 첫번째 사진만 나타나지만, 보이지 않는 오른쪽 공간에 다른 사진 두개가 숨어있다.
 
 사진들을 묶어줄 플렉스 컨테이너엔 `display: flex`를 써주고 아이템에는 `flex:none`를 써줘야 한다.
 
-### `flex: none`을 사용한 이유
+### flex: none 을 사용한 이유
 
 사진들을 묶어준 flex 컨테이너보다 사진들이 더 크다.  
 `flex` 속성이 기본값이라면 플렉스 컨테이너의 남은 공간을 채우려 늘어나지는 않지만, 플렉스 컨테이너의 크기를 넘지 않기 위해 최소 크기로 줄어든다.  
 기본값으로 한다면 저 작은 창에 사진들이 욱여넣어진다..  
 따라서 꼭 `flex: none` 또는 `flex: 0 0 auto`로 설정해주자.
 
-### `img` 태그가 아니라 `div` 태그를 사용한 이유
+### img 태그가 아니라 div 태그를 사용한 이유
 
 사진 비율을 유지한 채로 창 안에 예쁘게 담으려면, `img` 태그를 사용했을 때 `object-fit: contain`을 사용할 수 있다.  
 하지만 `object-fit`은 IE에서 사용할 수 없기 때문에 `img` 태그의 `object-fit`을 사용하는 대신 호환성이 좀 더 좋은 `div` 태그의 `background-size` 속성을 사용했다.
@@ -140,7 +140,7 @@ background-size: contain;
 background-repeat: no-repeat;
 ```
 
-### `img` 태그를 사용하려면,
+### img 태그를 사용하려면,
 
 아래처럼 약간만 바꿔주면 똑같이 나온다.
 
@@ -325,9 +325,9 @@ const App = () => {
 }
 ```
 
-![third-step.gif](third-step.gif)
+![완성된 Carousel](third-step.gif)
 
-### `margin-left` 대신 `transform` 속성 사용하기
+### margin-left 대신 transform 속성 사용하기
 
 `margin-left: 100%` 대신 `transform: translate(-100%)`을 사용해도 같게 동작한다.
 

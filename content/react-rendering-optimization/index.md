@@ -14,7 +14,7 @@ categories: react
 
 프로젝트는 간단한 투두리스트 앱으로 이렇게 생겼습니다.
 
-![todolist-structure.png](todolist-structure.png)
+![투두리스트 앱 화면 구조](todolist-structure.png)
 
 백엔드 서버에 API 요청을 해서 투두리스트 관련 데이터를 다루고 있습니다.
 
@@ -109,9 +109,9 @@ export default function TodoList({
 이렇게 수정한 투두리스트 앱을 테스트해보면 무한 렌더링은 벗어났지만 문제가 하나 있습니다.  
 TodoList 컴포넌트를 리렌더링할 때마다 상관없는 TodoInput 컴포넌트까지 같이 리렌더링됩니다.
 
-## `useCallback`과 `React.memo`를 이용해 리렌더링 최적화하기
+## useCallback과 React.memo를 이용해 리렌더링 최적화하기
 
-![rendering-test.gif](rendering-test.gif)
+![투두리스트 앱 리렌더링 화면](rendering-test.gif)
 
 이런 불필요한 리렌더링이 발생하는 이유는 다음과 같습니다.
 

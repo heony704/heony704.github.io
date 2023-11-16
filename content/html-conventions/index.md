@@ -47,7 +47,7 @@ HTML 문서는 `<html>`, `<head>`, `<body>` 요소가 없어도 대부분 잘 �
 
 더 많은 문서 유형에 대한 정보는 [여기](https://www.w3.org/wiki/Doctypes_and_markup_styles)서 확인 할 수 있습니다.
 
-## `<title>` 요소 생략하지 않기
+## \<title\> 요소 생략하지 않기
 
 `<title>` 요소의 내용은 페이지 제목을 제공하며 검색엔진최적화(SEO)에 매우 중요합니다.  
 따라서 제목을 가능한 정확하고 의미 있게 만들어야 합니다.
@@ -80,7 +80,7 @@ HTML 요소에 속성을 적용하려면 다음과 같이 두가지 방법이 �
 하지만 속성값에 공백이 포함된 경우 따옴표를 사용하지 않으면 제대로 인식되지 않습니다.  
 따라서 모두 따옴표를 사용하도록 통일하는 것이 가독성에도 좋고 혹시 모를 오류를 방지할 수 있습니다.
 
-## `<img>` 요소에 alt, width, height 정의하기
+## \<img\> 요소에 alt, width, height 정의하기
 
 `<img>` 요소의 alt 속성은 이미지를 로드할 수 없을 때 보여주는 대체 텍스트 속성입니다.  
 브라우저가 항상 이미지를 표시하는 것은 아닙니다.
@@ -114,7 +114,7 @@ HTML은 태그 내부에 공백을 원하는 대로 사용할 수 있습니다.
 html에 CSS 스타일을 적용하기 위한 방법은 인라인 스타일시트, 내부 스타일시트, 외부 스타일시트 세가지가 있습니다.  
 인라인 스타일시트와 내부 스타일시트 사용은 웹사이트를 유지보수 및 관리하기 어렵게 만들기 때문에 외부 스타일시트를 만들어 사용하는 것이 좋습니다.
 
-## `<head>` 태그 안에 외부 스타일 시트 배치하기
+## \<head\> 태그 안에 외부 스타일 시트 배치하기
 
 외부 스타일 시트는 HTML의 문서 아무곳에나 배치할 수 있지만 `<head>` 태그 안에 배치하는 것이 페이지를 더 빨리 로드합니다.
 
@@ -184,7 +184,10 @@ Microsoft, ISS와 같은 웹 서버는 파일 이름의 대소문자를 구분�
 
 ---
 
-참고: [HTML 스타일 가이드 및 코딩 규칙](https://www.w3schools.com/html/html5_syntax.asp), [10 HTML best practices for beginners](https://blog.tbhcreative.com/10-best-practices-in-html/)
+참고
+
+- [HTML 스타일 가이드 및 코딩 규칙](https://www.w3schools.com/html/html5_syntax.asp)
+- [10 HTML best practices for beginners](https://blog.tbhcreative.com/10-best-practices-in-html/)
 
 ```toc
 

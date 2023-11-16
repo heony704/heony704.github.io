@@ -19,7 +19,7 @@ HTTPS 통신을 설정하기 위해서는 SSL 인증서가 필요하고, SSL 인
 도메인을 구매할 수 있는 경로는 다양하다.  
 나는 가비아를 통해서 구매했고 레코드 설정도 해줬다.
 
-![gabia-dns-record.png](gabia-dns-record.png)
+![가비아 DNS 레코드 수정 화면](gabia-dns-record.png)
 
 도메인을 구매한 후 등록할 때 시간이 조금 걸리므로 여유를 가지고 확인하는 게 좋다.
 

@@ -20,16 +20,16 @@ http로 접속하는 것을 허용하려면 80을, https로 접속하는 것을 
 그러기 위해서 OCI의 VCN(가상 클라우드 네트워크) 메뉴에서 VCN을 생성한다.  
 아래와 같이 VCN 마법사를 통해 손쉽게 만들 수 있다.
 
-![oci-start-vcn-wizard.png](oci-start-vcn-wizard.png)
+![OCI VCN 마법사 시작 화면](oci-start-vcn-wizard.png)
 
 만들어진 VCN의 공용 서브넷에 들어가 수신 규칙을 추가한다.  
 난 아래 체크된 것처럼 80, 443, 3000 세가지 포트를 추가해줬다.
 
-![oci-ingress-rules.png](oci-ingress-rules.png)
+![OCI 리소스의 수신 규칙 화면](oci-ingress-rules.png)
 
 인스턴스에 만들어둔 VCN을 적용한다.
 
-![oci-connected-vnic.png](oci-connected-vnic.png)
+![OCI 리소스의 연결된 VNIC 화면](oci-connected-vnic.png)
 
 **🔥 VNIC가 생성되지 않을 때**  
 이미 VNIC가 존재하는 인스턴스에서 VNIC를 생성할 경우 다음과 같은 에러가 발생하며 생성되지 않는다.
@@ -46,13 +46,13 @@ http로 접속하는 것을 허용하려면 80을, https로 접속하는 것을 
 
 free-tier 계정은 예약된 공용 IP를 한개까지 만들 수 있다.
 
-![oci-reserved-public-ip-address.png](oci-reserved-public-ip-address.png)
+![OCI 예약된 공용 IP 주소 화면](oci-reserved-public-ip-address.png)
 
 해당 IP를 적용할 인스턴스의 연결된 VNIC에 들어간다.  
 IPv4 주소를 편집하여 예약된 공용 IP 주소로 바꾼다.  
 예약된 공용 IP가 바로 선택되지 않는 경우, 일단 공용 IP 없음으로 체크한 뒤 다시 편집으로 들어가 바꿔준다.
 
-![oci-ipv4-address.png](oci-ipv4-address.png)
+![OCI IPv4 주소 화면](oci-ipv4-address.png)
 
 ## ubuntu에 React 프로젝트 환경 만들기
 
@@ -79,7 +79,7 @@ sudo apt install nginx
 
 nginx 디렉토리의 내부는 다음과 같이 구성되어 있다.
 
-![nginx-directory.png](nginx-directory.png)
+![nginx 디렉토리 내부 파일들](nginx-directory.png)
 
 `nginx.conf` 파일은 nginx의 기본적인 설정이 기록되어 있다.
 
@@ -103,7 +103,7 @@ http {
 
 `nginx.conf` 파일의 http 블럭을 살펴보면 아래 사진과 같이 `sites-enabled` 폴더의 모든 파일을 include하는 것을 볼 수 있다. (버전에 따라 다를 수 있다.)
 
-![nginx-conf-http.png](nginx-conf-http.png)
+![nginx.conf 파일의 http 블럭](nginx-conf-http.png)
 
 `sites-enabled` 폴더는 `sites-available` 폴더에 있는 파일들을 symlink로 연결한 폴더다.  
 `sites-available` 폴더의 `default` 파일에서 서버 블록을 설정하면 nginx에 해당 설정이 반영된다.
@@ -114,7 +114,7 @@ sudo vi /etc/hginx/sites-available/default
 
 `sites-available` 폴더의 `default` 파일을 연 뒤, root 뒷부분을 react 프로젝트 빌드 파일 주소로 수정한다.
 
-![sites-available.png](sites-available.png)
+![sites-available 폴더의 default 파일](sites-available.png)
 
 `esc`를 누른 뒤 `:wq`를 입력해 빠져나오는 것을 잊지 말자.
 
@@ -128,7 +128,7 @@ sudo nginx -t
 
 아래와 같이 나오면 테스트 성공이다.
 
-![nginx-t.png](nginx-t.png)
+![nginx 테스트 성공한 모습](nginx-t.png)
 
 **- 시작하기**
 
@@ -144,7 +144,7 @@ sudo systemctl status nginx
 
 정상적으로 실행중이라면 아래와 같이 나온다.
 
-![systemctl-status-nginx.png](systemctl-status-nginx.png)
+![systemctl status nginx 명령어 실행 결과](systemctl-status-nginx.png)
 
 **- 멈추기**
 
@@ -162,7 +162,7 @@ port가 이미 사용중이기 때문에 nginx가 실행되지 않는 오류가 
 sudo netstat -ntap | grep "LISTEN "
 ```
 
-![netstat-ntap-grep-listen.png](netstat-ntap-grep-listen.png)
+![열려있는 모든 포트들 정보](netstat-ntap-grep-listen.png)
 
 아래 명령어를 통해 특정 포트만 따로 확인할 수도 있다.
 
@@ -170,7 +170,7 @@ sudo netstat -ntap | grep "LISTEN "
 sudo netstat -ntap | grep 80
 ```
 
-![netstat-ntap-grep-80.png](netstat-ntap-grep-80.png)
+![80번 포트 정보](netstat-ntap-grep-80.png)
 
 nginx가 포트를 사용할 수 있도록 해당 포트에 할당된 프로세스를 죽이면 된다.
 

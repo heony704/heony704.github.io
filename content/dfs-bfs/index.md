@@ -17,37 +17,37 @@ categories: algorithm
 
 다음과 같은 그래프가 있다.
 
-![dfs-example0.png](dfs-example0.png)
+![DFS 예시 그래프](dfs-example0.png)
 
 **1. 시작 노드에서 갈 수 있는 노드 중 하나를 선택하여 탐색한다.**
 
-![dfs-example1.png](dfs-example1.png)
+![DFS 탐색 과정 1](dfs-example1.png)
 
 그래프에서 0 을 시작 노드로 정하고, 갈 수 있는 노드 중 1 을 선택했다.
 
 **2. ① 과 같은 방법으로 탐색을 반복한다. (이미 방문한 노드는 선택지에서 제외)**
 
-![dfs-example2-1.png](dfs-example2-1.png)
+![DFS 탐색 과정 2-1](dfs-example2-1.png)
 
 1번 노드에서 갈 수 있는 선택지 0 과 2 중, 0은 이미 방문했으므로 2를 선택한다.
 
-![dfs-example2-2.png](dfs-example2-2.png)
+![DFS 탐색 과정 2-2](dfs-example2-2.png)
 
 2번 노드에서 갈 수 있는 선택지 0 과 3 중, 0은 이미 방문했으므로 3를 선택한다.
 
 **3. 다음으로 탐색해야 할 노드가 없다면 해당 노드를 호출한 부모 노드로 돌아가 더 탐색해야 할 노드가 있는지 찾는다.**
 
-![dfs-example3-1.png](dfs-example3-1.png)
+![DFS 탐색 과정 3-1](dfs-example3-1.png)
 
 3번 노드에서 더 이상 갈 수 있는 선택지가 없으므로, 2번 노드로 돌아간다.
 
-![dfs-example3-2.png](dfs-example3-2.png)
+![DFS 탐색 과정 3-2](dfs-example3-2.png)
 
 2번 노드에서는 4라는 선택지가 남아있으므로, 4번 노드를 선택한다.
 
 **4. 더 탐색할 노드가 없을 때까지 반복한다.**
 
-![dfs-example4.png](dfs-example4.png)
+![DFS 탐색 과정 4](dfs-example4.png)
 
 4번 노드에서 0은 이미 방문한 노드이므로 더 이상 탐색할 수 있는 노드가 없으니 2번 노드로 돌아간다.  
 2번 노드도 더 이상 탐색할 노드가 없어 1번 노드로 돌아간다.  
@@ -74,39 +74,39 @@ categories: algorithm
 
 다음과 같은 그래프가 있다.
 
-![bfs-example0.png](bfs-example0.png)
+![BFS 예시 그래프](bfs-example0.png)
 
 **1. 시작 노드에서 갈 수 있는 모든 노드를 큐에 넣는다.**
 
-![bfs-example1.png](bfs-example1.png)
+![BFS 탐색 과정 1](bfs-example1.png)
 
 시작 노드인 0번 노드와 연결된 1, 2, 4을 모두 큐에 넣는다.  
 큐에 들어간 노드들을 차례대로 탐색할 것이다. 큐는 곧 방문할 노드들을 의미한다.
 
 **2. 큐에 들어간 노드를 하나 뽑아서 ① 과 같은 방법으로 탐색을 반복한다. (이미 방문한 노드는 선택지에서 제외)**
 
-![bfs-example2-1.png](bfs-example2-1.png)
+![BFS 탐색 과정 2-1](bfs-example2-1.png)
 
 큐는 선입선출이기 때문에 1번 노드가 이번에 탐색할 노드가 된다.  
 1번 노드와 연결된 노드 중 0 은 이미 방문한 노드이고, 2 는 곧 방문할 노드로 큐에 들어가 있기 때문에 더 이상 큐에 추가할 노드가 없다.  
 큐에서 나올 차례인 2번 노드로 넘어간다.
 
-![bfs-example2-2.png](bfs-example2-2.png)
+![BFS 탐색 과정 2-2](bfs-example2-2.png)
 
 2번 노드와 연결된 3, 4 중에서 4는 이미 큐에 추가되어 있으므로, 3만 큐에 추가해준다.  
 큐에서 나올 차례인 4 으로 넘어간다.
 
-![bfs-example2-3.png](bfs-example2-3.png)
+![BFS 탐색 과정 2-3](bfs-example2-3.png)
 
 4번 노드는 더 이상 큐에 추가할 노드가 없다.
 
-![bfs-example2-4.png](bfs-example2-4.png)
+![BFS 탐색 과정 2-4](bfs-example2-4.png)
 
 3번 노드도 더 이상 큐에 추가할 노드가 없다.
 
 **3. 큐가 비었다면 탐색을 종료한다.**
 
-![bfs-example3.png](bfs-example3.png)
+![BFS 탐색 과정 3](bfs-example3.png)
 
 ### 특징
 
@@ -149,7 +149,7 @@ categories: algorithm
 
 BFS에서 최단 거리 경로가 보장되는 이유는, 출발 노드에서 목표 노드까지의 최단 길이는 결국 둘의 레벨 차이이기 때문이다.
 
-![bfs-graph.png](bfs-graph.png)
+![BFS 그래프](bfs-graph.png)
 
 위 그래프에서 A와 G 간의 최단거리를 구한다고 생각하면 알 수 있다.
 

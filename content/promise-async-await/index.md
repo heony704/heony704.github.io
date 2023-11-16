@@ -33,7 +33,7 @@ Promise는 다음 중 하나의 상태를 가진다.
 
 대기 상태에서 벗어나 이행 혹은 거부 상태가 됐다면, Promise가 `처리(settled)`됐다고 말한다.
 
-![promise-flow.png](promise-flow.png)
+![Promise 흐름](promise-flow.png)
 
 Promise가 대기 상태에서 연산을 수행하고 이행 혹은 거부 상태로 변한다면(Promise가 처리된다면), `then` 혹은 `catch` 메서드로 추가된 작업을 수행한다.
 

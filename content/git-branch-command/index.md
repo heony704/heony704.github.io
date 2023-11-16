@@ -116,9 +116,9 @@ git push origin feature/moveBlockHandler
 
 참고
 
-- https://www.tuwlab.com/ece/22216
-- https://www.tuwlab.com/22214
-- https://velog.io/@clubmed2/Git-branch생성-후-push하기
+- [[GIT] Branch 관리하기: branch, checkout, push, pull](https://www.tuwlab.com/ece/22216)
+- [[GIT] Commit하고 원격 저장소로 내보내기: add, reset, commit, push](https://www.tuwlab.com/22214)
+- [[Git] branch생성 후 push하기](https://velog.io/@clubmed2/Git-branch생성-후-push하기)
 
 ```toc
 

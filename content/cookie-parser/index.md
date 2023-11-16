@@ -112,7 +112,10 @@ app.listen(8080);
 
 ---
 
-참고: [npm cookie-parser](https://www.npmjs.com/package/cookie-parser), [expressjs cookie-parser](http://expressjs.com/en/resources/middleware/cookie-parser.html)
+참고
+
+- [npm cookie-parser](https://www.npmjs.com/package/cookie-parser)
+- [expressjs cookie-parser](http://expressjs.com/en/resources/middleware/cookie-parser.html)
 
 ```toc
 

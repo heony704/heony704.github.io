@@ -45,14 +45,14 @@ React 프로젝트를 최적화하는 방법 중 코드 분할과 지연 로딩�
 커다란 하나만 있는 건 잘못된 게 아니다.  
 따로 코드를 분할하지 않아 빌드 파일이 하나로 통합되어서 그런 것이다.
 
-## `lazy`와 `Suspense`로 코드 분할하기
+## lazy와 Suspense로 코드 분할하기
 
 `lazy` 함수와 `Suspense` 컴포넌트를 사용하면 지연 로딩할 코드를 분할할 수 있다.
 컴포넌트를 동적으로 import해 코드를 분할시키는 것이다.
 
 코드 분할 전의 코드는 이렇다.
 
-```ts
+```tsx
 import AuthPage from 'src/pages/AuthPage';
 import TodolistPage from 'src/pages/TodolistPage';
 
@@ -82,7 +82,7 @@ export default function App() {
 
 그래서 공통으로 사용되는 `Authorization` 컴포넌트를 제외한 나머지 컴포넌트들을 `lazy`와 `Suspense`를 사용해 동적으로 import했다.
 
-```ts
+```tsx
 import Authorization from 'src/components/Authorization';
 
 const AuthPage = lazy(() => import('src/pages/AuthPage'));

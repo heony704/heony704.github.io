@@ -80,6 +80,6 @@ export default function App() {
 
 이렇게 하면 다음과 같이 내가 원하는 대로 작동한다.
 
-![popup.gif](popup.gif)
+![팝업 작동 화면](popup.gif)
 
 이번은 `onAnimationEnd`를 이용해 간단하게 끝냈지만, 조만간 unmount 애니메이션을 제어하는 날이 온다면 State를 관리해서 사라지도록 만들어야겠다.
