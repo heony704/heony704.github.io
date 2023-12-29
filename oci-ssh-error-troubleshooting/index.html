@@ -1,0 +1,482 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><meta name="generator" content="Gatsby 4.25.7"/><meta data-react-helmet="true" name="google-site-verification" content="oo5P-Bt6B8GWKkQ6CxCdiUGeO6TCCxjsJRcPWrzLV-s"/><meta data-react-helmet="true" property="og:title" content="OCI ubuntu 인스턴스 SSH 접속 장애 조치"/><meta data-react-helmet="true" property="og:site_title" content="OCI ubuntu 인스턴스 SSH 접속 장애 조치"/><meta data-react-helmet="true" name="description" content="클라우드: Oracle Cloud Infrastructure 이미지: Canonical Ubuntu 20.04 OCI ubuntu 인스턴스에 올려놓은 애플리케이션이 갑자기 작동을 멈췄다. 확인하려고 PuTTY로 접속했는데 서버의 public key랑 private key가 일치하지 않는다고 떴다. 분명 과거에 일치했었고 세션에 저장까지 해둔 key인데..! 해킹된건지 뭐 때문인지 감이 안잡혀서 부트 볼륨을 떼서 분석해보기로 했다. 해당 인스턴스로 SSH 접속이 불가능한 상태이기 때문에 드라이브를 분리한 뒤 다음 과정대로 트러블슈팅했다. 장애가 발생한 인스턴스의 부트 볼륨을 분리 해당 부트 볼륨을 다른 멀쩡한 인스턴스의 블록 볼륨에 연결 디렉토리 마운트 &amp; SSH 키 새로 생성 드라이브 분리하기 장애가 발생한 인스턴스의 부트 볼륨 탭에 들어간다. 부트 볼륨이란? 컴퓨트 인스턴스 부트를 위해 사용되는 이미지가 포함된 스토리지 장치  해당 부트 볼륨을 분리해준다. 다른 인스턴스에 드라이…"/><meta data-react-helmet="true" property="og:description" content="클라우드: Oracle Cloud Infrastructure 이미지: Canonical Ubuntu 20.04 OCI ubuntu 인스턴스에 올려놓은 애플리케이션이 갑자기 작동을 멈췄다. 확인하려고 PuTTY로 접속했는데 서버의 public key랑 private key가 일치하지 않는다고 떴다. 분명 과거에 일치했었고 세션에 저장까지 해둔 key인데..! 해킹된건지 뭐 때문인지 감이 안잡혀서 부트 볼륨을 떼서 분석해보기로 했다. 해당 인스턴스로 SSH 접속이 불가능한 상태이기 때문에 드라이브를 분리한 뒤 다음 과정대로 트러블슈팅했다. 장애가 발생한 인스턴스의 부트 볼륨을 분리 해당 부트 볼륨을 다른 멀쩡한 인스턴스의 블록 볼륨에 연결 디렉토리 마운트 &amp; SSH 키 새로 생성 드라이브 분리하기 장애가 발생한 인스턴스의 부트 볼륨 탭에 들어간다. 부트 볼륨이란? 컴퓨트 인스턴스 부트를 위해 사용되는 이미지가 포함된 스토리지 장치  해당 부트 볼륨을 분리해준다. 다른 인스턴스에 드라이…"/><meta data-react-helmet="true" property="og:author" content="이승헌"/><meta data-react-helmet="true" property="og:image" content="/og-image.png"/><meta data-react-helmet="true" property="og:type" content="website"/><style data-href="/styles.a0010a8142e9cabc3e16.css" data-identity="gatsby-global-css">@font-face{font-display:swap;font-family:Montserrat;font-style:normal;font-weight:100;src:local("Montserrat Thin "),local("Montserrat-Thin"),url(/static/montserrat-latin-100-8d7d79679b70dbe27172b6460e7a7910.woff2) format("woff2"),url(/static/montserrat-latin-100-ec38980a9e0119a379e2a9b3dbb1901a.woff) format("woff")}@font-face{font-display:swap;font-family:Montserrat;font-style:italic;font-weight:100;src:local("Montserrat Thin italic"),local("Montserrat-Thinitalic"),url(/static/montserrat-latin-100italic-e279051046ba1286706adc886cf1c96b.woff2) format("woff2"),url(/static/montserrat-latin-100italic-3b325a3173c8207435cd1b76e19bf501.woff) format("woff")}@font-face{font-display:swap;font-family:Montserrat;font-style:normal;font-weight:200;src:local("Montserrat Extra Light "),local("Montserrat-Extra Light"),url(/static/montserrat-latin-200-9d266fbbfa6cab7009bd56003b1eeb67.woff2) format("woff2"),url(/static/montserrat-latin-200-2d8ba08717110d27122e54c34b8a5798.woff) format("woff")}@font-face{font-display:swap;font-family:Montserrat;font-style:italic;font-weight:200;src:local("Montserrat Extra Light italic"),local("Montserrat-Extra Lightitalic"),url(/static/montserrat-latin-200italic-6e5b3756583bb2263eb062eae992735e.woff2) format("woff2"),url(/static/montserrat-latin-200italic-a0d6f343e4b536c582926255367a57da.woff) format("woff")}@font-face{font-display:swap;font-family:Montserrat;font-style:normal;font-weight:300;src:local("Montserrat Light "),local("Montserrat-Light"),url(/static/montserrat-latin-300-00b3e893aab5a8fd632d6342eb72551a.woff2) format("woff2"),url(/static/montserrat-latin-300-ea303695ceab35f17e7d062f30e0173b.woff) format("woff")}@font-face{font-display:swap;font-family:Montserrat;font-style:italic;font-weight:300;src:local("Montserrat Light italic"),local("Montserrat-Lightitalic"),url(/static/montserrat-latin-300italic-56f34ea368f6aedf89583d444bbcb227.woff2) format("woff2"),url(/static/montserrat-latin-300italic-54b0bf2c8c4c12ffafd803be2466a790.woff) format("woff")}@font-face{font-display:swap;font-family:Montserrat;font-style:normal;font-weight:400;src:local("Montserrat Regular "),local("Montserrat-Regular"),url(/static/montserrat-latin-400-b71748ae4f80ec8c014def4c5fa8688b.woff2) format("woff2"),url(/static/montserrat-latin-400-0659a9f4e90db5cf51b50d005bff1e41.woff) format("woff")}@font-face{font-display:swap;font-family:Montserrat;font-style:italic;font-weight:400;src:local("Montserrat Regular italic"),local("Montserrat-Regularitalic"),url(/static/montserrat-latin-400italic-6eed6b4cbb809c6efc7aa7ddad6dbe3e.woff2) format("woff2"),url(/static/montserrat-latin-400italic-7583622cfde30ae49086d18447ab28e7.woff) format("woff")}@font-face{font-display:swap;font-family:Montserrat;font-style:normal;font-weight:500;src:local("Montserrat Medium "),local("Montserrat-Medium"),url(/static/montserrat-latin-500-091b209546e16313fd4f4fc36090c757.woff2) format("woff2"),url(/static/montserrat-latin-500-edd311588712a96bbf435fad264fff62.woff) format("woff")}@font-face{font-display:swap;font-family:Montserrat;font-style:italic;font-weight:500;src:local("Montserrat Medium italic"),local("Montserrat-Mediumitalic"),url(/static/montserrat-latin-500italic-c90ced68b46050061d1a41842d6dfb43.woff2) format("woff2"),url(/static/montserrat-latin-500italic-5146cbfe02b1deea5dffea27a5f2f998.woff) format("woff")}@font-face{font-display:swap;font-family:Montserrat;font-style:normal;font-weight:600;src:local("Montserrat SemiBold "),local("Montserrat-SemiBold"),url(/static/montserrat-latin-600-0480d2f8a71f38db8633b84d8722e0c2.woff2) format("woff2"),url(/static/montserrat-latin-600-b77863a375260a05dd13f86a1cee598f.woff) format("woff")}@font-face{font-display:swap;font-family:Montserrat;font-style:italic;font-weight:600;src:local("Montserrat SemiBold italic"),local("Montserrat-SemiBolditalic"),url(/static/montserrat-latin-600italic-cf46ffb11f3a60d7df0567f8851a1d00.woff2) format("woff2"),url(/static/montserrat-latin-600italic-c4fcfeeb057724724097167e57bd7801.woff) format("woff")}@font-face{font-display:swap;font-family:Montserrat;font-style:normal;font-weight:700;src:local("Montserrat Bold "),local("Montserrat-Bold"),url(/static/montserrat-latin-700-7dbcc8a5ea2289d83f657c25b4be6193.woff2) format("woff2"),url(/static/montserrat-latin-700-99271a835e1cae8c76ef8bba99a8cc4e.woff) format("woff")}@font-face{font-display:swap;font-family:Montserrat;font-style:italic;font-weight:700;src:local("Montserrat Bold italic"),local("Montserrat-Bolditalic"),url(/static/montserrat-latin-700italic-c41ad6bdb4bd504a843d546d0a47958d.woff2) format("woff2"),url(/static/montserrat-latin-700italic-6779372f04095051c62ed36bc1dcc142.woff) format("woff")}@font-face{font-display:swap;font-family:Montserrat;font-style:normal;font-weight:800;src:local("Montserrat ExtraBold "),local("Montserrat-ExtraBold"),url(/static/montserrat-latin-800-db9a3e0ba7eaea32e5f55328ace6cf23.woff2) format("woff2"),url(/static/montserrat-latin-800-4e3c615967a2360f5db87d2f0fd2456f.woff) format("woff")}@font-face{font-display:swap;font-family:Montserrat;font-style:italic;font-weight:800;src:local("Montserrat ExtraBold italic"),local("Montserrat-ExtraBolditalic"),url(/static/montserrat-latin-800italic-bf45bfa14805969eda318973947bc42b.woff2) format("woff2"),url(/static/montserrat-latin-800italic-fe82abb0bcede51bf724254878e0c374.woff) format("woff")}@font-face{font-display:swap;font-family:Montserrat;font-style:normal;font-weight:900;src:local("Montserrat Black "),local("Montserrat-Black"),url(/static/montserrat-latin-900-e66c7edc609e24bacbb705175669d814.woff2) format("woff2"),url(/static/montserrat-latin-900-8211f418baeb8ec880b80ba3c682f957.woff) format("woff")}@font-face{font-display:swap;font-family:Montserrat;font-style:italic;font-weight:900;src:local("Montserrat Black italic"),local("Montserrat-Blackitalic"),url(/static/montserrat-latin-900italic-4454c775e48152c1a72510ceed3603e2.woff2) format("woff2"),url(/static/montserrat-latin-900italic-efcaa0f6a82ee0640b83a0916e6e8d68.woff) format("woff")}.search-input-wrapper{align-items:center;display:none;margin-top:3px;width:180px}@media(min-width:768px){.search-input-wrapper{display:flex}}.search-icon{color:var(--primary-text-color);margin-right:2px}.search-input{height:100%;width:100%}.search-input .MuiAutocomplete-inputRoot{padding-right:0!important}.search-input .MuiInputBase-input{color:var(--primary-text-color)!important;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;font-size:16px;font-weight:500;padding-bottom:2px!important}.search-input .MuiInput-underline:before{border-bottom-color:var(--primary-text-color);border-bottom-width:1px}.search-input .MuiInput-underline:after{border-bottom-color:var(--primary-text-color)}.page-header-wrapper{display:flex;height:60px;justify-content:center;width:100%}.page-header-wrapper .page-header{align-items:center;display:flex;justify-content:space-between;max-width:720px;width:100%}.page-header-wrapper .page-header .link{color:var(--primary-text-color);font-size:17px;font-weight:700}@media(min-width:768px){.page-header-wrapper .page-header .link{font-size:20px;font-weight:700}}.page-header-wrapper .page-header .trailing-section{align-items:center;display:flex}.page-header-wrapper .page-header .trailing-section .link{margin-right:10px}@media(min-width:768px){.page-header-wrapper .page-header .trailing-section .link{margin-right:20px}}.icon{color:var(--about-link-icon-color);font-size:20px}.social-links .icon{color:var(--bio-link-icon-color);font-size:30px}.page-footer-wrapper{align-items:center;display:flex;height:72px;justify-content:center;margin-top:15px;width:100%}.page-footer-wrapper .page-footer{align-items:center;display:flex;justify-content:space-between;max-width:720px;width:100%}.page-footer-wrapper .page-footer .link{color:var(--primary-text-color);font-size:20px;font-weight:700;margin-right:20px}.page-footer-wrapper .page-footer .social-links{display:flex}.dark-mode-button-wrapper{align-items:center;bottom:20px;display:flex;justify-content:center;position:fixed;right:20px}.dark-mode-button{-webkit-backdrop-filter:blur(30px);backdrop-filter:blur(30px);background-color:#363f47!important;border-radius:50px;box-shadow:0 5px 25px rgba(0,0,0,.12);cursor:pointer;height:50px;width:50px;z-index:3}.dark-mode-icon{color:#fff}a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video{border:0;font-size:100%;font:inherit;margin:0;padding:0;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:after,blockquote:before,q:after,q:before{content:"";content:none}table{border-collapse:collapse;border-spacing:0}a{outline:none;text-decoration:none}html{--background-color:#fff;--primary-text-color:#000;--secondary-text-color:#9e9e9e;--content-text-color:#37352f;--button-background-color:#f3f3f4;--button-text-color:#363f47;--tab-text-color:#6e6d7a;--tab-hover-text-color:#0d0c22;--tab-selected-background-color:rgba(13,12,34,.05);--bio-link-icon-color:rgba(0,0,0,.54);--about-link-icon-color:#a8a8a8;--chip-background-color:#f3f3f4;--link-text-color:rgba(55,53,47,.7);--post-card-border-color:rgba(0,0,0,.12);--markdown-table-even-cell-background-color:#f6f8fa;--markdown-table-border-color:#dfe2e5;--markdown-blockquote-border-color:#dfe2e5;--markdown-border-color:#e1e4e8}html[data-theme=dark]{--background-color:#232326;--primary-text-color:#e6e6e6;--secondary-text-color:#768390;--content-text-color:#e6e6e6;--button-background-color:#444c56;--button-text-color:#363f47;--tab-text-color:#768390;--tab-hover-text-color:#acbac7;--tab-selected-background-color:#373e47;--chip-background-color:#323a42;--bio-link-icon-color:#e6e6e6;--about-link-icon-color:#a8a8a8;--link-text-color:#90b0ec;--post-card-border-color:#363f47;--markdown-table-even-cell-background-color:#2d333b;--markdown-table-border-color:#444c56;--markdown-blockquote-border-color:#4f5864;--markdown-border-color:#e1e4e8}*{-webkit-appearance:none;appearance:none;box-sizing:border-box}html{font-size:14px;height:100%;overflow-y:scroll;width:100%}body{background-color:var(--background-color)!important}a{color:var(--link-text-color)}.page-wrapper{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;color:var(--primary-text-color);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;justify-content:center;min-height:100vh;padding-left:15px;padding-right:15px;word-break:keep-all}.page-wrapper,.page-wrapper .page-content{align-items:center;display:flex;flex-direction:column;width:100%}.page-wrapper .page-content{max-width:720px}.bio{color:var(--primary-text-color);display:flex;flex-direction:column;margin-bottom:60px;margin-top:60px;width:100%}@media(min-width:768px){.bio{align-items:center;flex-direction:row}}.bio .introduction{display:flex;flex-direction:column;font-weight:100;line-height:1.2;word-break:keep-all}.bio .introduction .title{font-size:32px;margin-bottom:8px}@media(min-width:768px){.bio .introduction .title{font-size:36px;margin-bottom:16px}}.bio .introduction .title strong{display:inline-block;font-weight:600}.bio .introduction .description{font-size:18px}.post-header{border-bottom:1px solid var(--post-card-border-color);display:flex;flex-direction:column;justify-content:center;margin-bottom:40px;margin-top:20px;padding-bottom:10px;width:100%;word-break:keep-all}.post-header .categories{margin-bottom:5px}.post-header .categories .category{color:var(--primary-text-color);font-weight:600;margin-right:4px}.post-header .categories .category:hover{text-decoration:underline}.post-header .title{color:var(--primary-text-color);font-size:32px;font-weight:600;line-height:1.3;margin-bottom:6px}.post-header .info{color:var(--secondary-text-color);display:flex;flex-wrap:wrap;font-size:16px;font-weight:500;line-height:1.5;width:100%}.post-header .info .author{margin-right:4px}.post-header .info strong{color:var(--primary-text-color);font-weight:600}.post-navigator{column-gap:1.4%;display:grid;grid-template-columns:49.3% 49.3%;width:100%}.post-navigator .post-card{border:1px solid var(--post-card-border-color);border-radius:6px;color:var(--primary-text-color);cursor:pointer;display:flex;flex-direction:column;padding:15px;transition:transform .2s;width:100%}.post-navigator .post-card:hover .title{text-decoration:underline}.post-navigator .post-card.prev{margin-right:auto}.post-navigator .post-card.next{margin-left:auto}.post-navigator .post-card .direction{color:gray;font-size:14px;font-weight:500;margin-bottom:5px}.post-navigator .post-card .title{font-size:16px;font-weight:600;line-height:1.4;margin-bottom:7px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.markdown .octicon{fill:currentColor;display:inline-block;vertical-align:text-bottom}.markdown .anchor{float:left;line-height:1;margin-left:-20px;padding-right:4px}.markdown .anchor:focus{outline:none}.markdown h1 .octicon-link,.markdown h2 .octicon-link,.markdown h3 .octicon-link,.markdown h4 .octicon-link,.markdown h5 .octicon-link,.markdown h6 .octicon-link{color:#1b1f23;vertical-align:middle;visibility:hidden}.markdown h1:hover .anchor,.markdown h2:hover .anchor,.markdown h3:hover .anchor,.markdown h4:hover .anchor,.markdown h5:hover .anchor,.markdown h6:hover .anchor{text-decoration:none}.markdown h1:hover .anchor .octicon-link,.markdown h2:hover .anchor .octicon-link,.markdown h3:hover .anchor .octicon-link,.markdown h4:hover .anchor .octicon-link,.markdown h5:hover .anchor .octicon-link,.markdown h6:hover .anchor .octicon-link{visibility:visible}.markdown h1:hover .anchor .octicon-link:before,.markdown h2:hover .anchor .octicon-link:before,.markdown h3:hover .anchor .octicon-link:before,.markdown h4:hover .anchor .octicon-link:before,.markdown h5:hover .anchor .octicon-link:before,.markdown h6:hover .anchor .octicon-link:before{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' aria-hidden='true' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z'/%3E%3C/svg%3E");content:" ";display:inline-block;height:16px;width:16px}.markdown{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;word-wrap:break-word;color:var(--content-text-color);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;font-size:16px;font-weight:500;line-height:2}.markdown details{display:block}.markdown summary{display:list-item}.markdown a{background-color:initial}.markdown a:active,.markdown a:hover{outline-width:0}.markdown strong{font-weight:inherit;font-weight:bolder}.markdown h1{margin:.67em 0}.markdown img{border-style:none}.markdown code,.markdown kbd,.markdown pre{font-family:monospace,monospace;font-size:1em}.markdown hr{box-sizing:initial;overflow:visible}.markdown input{font:inherit;margin:0;overflow:visible}.markdown [type=checkbox]{box-sizing:border-box;padding:0}.markdown *{box-sizing:border-box}.markdown input{font-family:inherit;font-size:inherit;line-height:inherit}.markdown a{border-bottom:.05em solid;border-color:var(--link-text-color);color:var(--link-text-color);text-decoration:none}.markdown a.anchor{border-bottom:none}.markdown strong{font-weight:700}.markdown hr{background:transparent;border-bottom:1px solid var(--markdown-blockquote-border-color);height:0;margin:15px 0;overflow:hidden}.markdown hr:after,.markdown hr:before{content:"";display:table}.markdown hr:after{clear:both}.markdown table{border-collapse:collapse;border-spacing:0}.markdown td,.markdown th{padding:0}.markdown details summary{cursor:pointer}.markdown h1,.markdown h2,.markdown h3,.markdown h4,.markdown h5,.markdown h6{margin-bottom:0;margin-top:0}.markdown h1{font-size:32px}.markdown h1,.markdown h2{font-weight:600}.markdown h2{font-size:24px}.markdown h3{font-size:20px}.markdown h3,.markdown h4{font-weight:600}.markdown h4{font-size:16px}.markdown h5{font-size:14px}.markdown h5,.markdown h6{font-weight:600}.markdown h6{font-size:12px}.markdown p{margin-bottom:10px;margin-top:0}.markdown blockquote{margin:0}.markdown ol,.markdown ul{margin-bottom:0;margin-top:0;padding-left:0}.markdown ol ol,.markdown ul ol{list-style-type:lower-roman}.markdown ol ol ol,.markdown ol ul ol,.markdown ul ol ol,.markdown ul ul ol{list-style-type:lower-alpha}.markdown dd{margin-left:0}.markdown code,.markdown pre{font-family:SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;font-size:12px}.markdown code.language-text{border-radius:3px;font-size:85%;padding:.2em .4em}.markdown :not(pre)>code.language-text{background:hsla(44,6%,50%,.15);color:#eb5757;overflow-wrap:break-word}.markdown pre{margin-bottom:0;margin-top:0}.markdown input::-webkit-inner-spin-button,.markdown input::-webkit-outer-spin-button{-webkit-appearance:none;appearance:none;margin:0}.markdown :checked+.radio-label{border-color:#0366d6;position:relative;z-index:1}.markdown .border{border:1px solid var(--markdown-border-color)!important}.markdown .border-0{border:0!important}.markdown .border-bottom{border-bottom:1px solid var(--markdown-border-color)!important}.markdown .rounded-1{border-radius:3px!important}.markdown .bg-white{background-color:transparent!important}.markdown .bg-gray-light{background-color:#fafbfc!important}.markdown .text-gray-light{color:#6a737d!important}.markdown .pl-3,.markdown .px-3{padding-left:16px!important}.markdown .px-3{padding-right:16px!important}.markdown .f6{font-size:12px!important}.markdown .lh-condensed{line-height:1.25!important}.markdown .text-bold{font-weight:600!important}.markdown .pl-c{color:#6a737d}.markdown .pl-c1,.markdown .pl-s .pl-v{color:#005cc5}.markdown .pl-e,.markdown .pl-en{color:#6f42c1}.markdown .pl-s .pl-s1,.markdown .pl-smi{color:#24292e}.markdown .pl-ent{color:#22863a}.markdown .pl-k{color:#d73a49}.markdown .pl-pds,.markdown .pl-s,.markdown .pl-s .pl-pse .pl-s1,.markdown .pl-sr,.markdown .pl-sr .pl-cce,.markdown .pl-sr .pl-sra,.markdown .pl-sr .pl-sre{color:#032f62}.markdown .pl-smw,.markdown .pl-v{color:#e36209}.markdown .pl-bu{color:#b31d28}.markdown .pl-ii{background-color:#b31d28;color:#fafbfc}.markdown .pl-c2{background-color:#d73a49;color:#fafbfc}.markdown .pl-c2:before{content:"^M"}.markdown .pl-sr .pl-cce{color:#22863a;font-weight:700}.markdown .pl-ml{color:#735c0f}.markdown .pl-mh,.markdown .pl-mh .pl-en,.markdown .pl-ms{color:#005cc5;font-weight:700}.markdown .pl-mi{color:#24292e;font-style:italic}.markdown .pl-mb{color:#24292e;font-weight:700}.markdown .pl-md{background-color:#ffeef0;color:#b31d28}.markdown .pl-mi1{background-color:#f0fff4;color:#22863a}.markdown .pl-mc{background-color:#ffebda;color:#e36209}.markdown .pl-mi2{background-color:#005cc5;color:#f6f8fa}.markdown .pl-mdr{color:#6f42c1;font-weight:700}.markdown .pl-ba{color:#586069}.markdown .pl-sg{color:#959da5}.markdown .pl-corl{color:#032f62;text-decoration:underline}.markdown .mb-0{margin-bottom:0!important}.markdown .my-2{margin-bottom:8px!important;margin-top:8px!important}.markdown .pl-0{padding-left:0!important}.markdown .py-0{padding-bottom:0!important;padding-top:0!important}.markdown .pl-1{padding-left:4px!important}.markdown .pl-2{padding-left:8px!important}.markdown .py-2{padding-bottom:8px!important;padding-top:8px!important}.markdown .pl-3{padding-left:16px!important}.markdown .pl-4{padding-left:24px!important}.markdown .pl-5{padding-left:32px!important}.markdown .pl-6{padding-left:40px!important}.markdown .pl-7{padding-left:48px!important}.markdown .pl-8{padding-left:64px!important}.markdown .pl-9{padding-left:80px!important}.markdown .pl-10{padding-left:96px!important}.markdown .pl-11{padding-left:112px!important}.markdown .pl-12{padding-left:128px!important}.markdown hr{border-bottom-color:#eee}.markdown kbd{background-color:#fafbfc;border:1px solid #d1d5da;border-radius:3px;box-shadow:inset 0 -1px 0 #d1d5da;color:#444d56;display:inline-block;font:11px SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;line-height:10px;padding:3px 5px;vertical-align:middle}.markdown:after,.markdown:before{content:"";display:table}.markdown:after{clear:both}.markdown>:first-child{margin-top:0!important}.markdown>:last-child{margin-bottom:0!important}.markdown a:not([href]){color:inherit;text-decoration:none}.markdown blockquote,.markdown details,.markdown dl,.markdown ol,.markdown p,.markdown pre,.markdown table,.markdown ul{margin-bottom:32px;margin-top:0}.markdown hr{background-color:var(--markdown-border-color);border:0;height:.25em;margin:24px 0;padding:0}.markdown blockquote{border-left:.25em solid var(--markdown-blockquote-border-color);color:#6a737d;padding:0 1em}.markdown blockquote>:first-child{margin-top:0}.markdown blockquote>:last-child{margin-bottom:0}.markdown h1,.markdown h2,.markdown h3,.markdown h4,.markdown h5,.markdown h6{font-weight:600;line-height:1.25;margin-bottom:16px;margin-top:48px}.markdown h1{font-size:2em}.markdown h2{font-size:1.5em}.markdown h3{font-size:1.25em}.markdown h4{font-size:1em}.markdown h5{font-size:.875em}.markdown h6{color:#6a737d;font-size:.85em}.markdown ol,.markdown ul{padding-left:2em}.markdown ol ol,.markdown ol ul,.markdown ul ol,.markdown ul ul{margin-bottom:0;margin-top:0}.markdown ol{list-style-type:decimal}.markdown ul{list-style-type:disc}.markdown li{word-wrap:break-all;display:list-item;text-align:-webkit-match-parent}.markdown li>p{margin-top:16px}.markdown li+li{margin-top:.25em}.markdown dl{padding:0}.markdown dl dt{font-size:1em;font-style:italic;font-weight:600;margin-top:16px;padding:0}.markdown dl dd{margin-bottom:16px;padding:0 16px}.markdown table{display:block;overflow:auto;width:100%}.markdown table th{font-weight:600}.markdown table td,.markdown table th{border:1px solid var(--markdown-table-border-color);padding:6px 13px}.markdown table tr{border-top:1px solid var(--markdown-table-border-color)}.markdown table tr:nth-child(2n){background-color:var(--markdown-table-even-cell-background-color)}.markdown img{background-color:transparent;box-sizing:initial;display:block;margin:0 auto;max-width:100%}.markdown img[align=right]{padding-left:20px}.markdown img[align=left]{padding-right:20px}.markdown code{background-color:rgba(27,31,35,.05);border-radius:3px;font-size:85%;margin:0;padding:.2em .4em}.markdown pre{word-wrap:normal}.markdown pre>code{background:transparent;border:0;font-size:100%;margin:0;padding:0;white-space:pre;word-break:normal}.markdown .highlight{margin-bottom:16px}.markdown .highlight pre{margin-bottom:0;word-break:normal}.markdown .highlight pre,.markdown pre{background-color:#f6f8fa;border-radius:3px;font-size:85%;line-height:1.45;overflow:auto;padding:16px}.markdown pre code{word-wrap:normal;background-color:initial;border:0;display:inline;line-height:inherit;margin:0;max-width:auto;overflow:visible;padding:0}.markdown .commit-tease-sha{color:#444d56;display:inline-block;font-family:SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;font-size:90%}.markdown .full-commit .btn-outline:not(:disabled):hover{border-color:#005cc5;color:#005cc5}.markdown .blob-wrapper{overflow-x:auto;overflow-y:hidden}.markdown .blob-wrapper-embedded{max-height:240px;overflow-y:auto}.markdown .blob-num{color:rgba(27,31,35,.3);cursor:pointer;font-family:SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;font-size:12px;line-height:20px;min-width:50px;padding-left:10px;padding-right:10px;text-align:right;-webkit-user-select:none;user-select:none;vertical-align:top;white-space:nowrap;width:1%}.markdown .blob-num:hover{color:rgba(27,31,35,.6)}.markdown .blob-num:before{content:attr(data-line-number)}.markdown .blob-code{line-height:20px;padding-left:10px;padding-right:10px;position:relative;vertical-align:top}.markdown .blob-code-inner{word-wrap:normal;color:#24292e;font-family:SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;font-size:12px;overflow:visible;white-space:pre}.markdown .pl-token.active,.markdown .pl-token:hover{background:#ffea7f;cursor:pointer}.markdown .tab-size[data-tab-size="1"]{-o-tab-size:1;tab-size:1}.markdown .tab-size[data-tab-size="2"]{-o-tab-size:2;tab-size:2}.markdown .tab-size[data-tab-size="3"]{-o-tab-size:3;tab-size:3}.markdown .tab-size[data-tab-size="4"]{-o-tab-size:4;tab-size:4}.markdown .tab-size[data-tab-size="5"]{-o-tab-size:5;tab-size:5}.markdown .tab-size[data-tab-size="6"]{-o-tab-size:6;tab-size:6}.markdown .tab-size[data-tab-size="7"]{-o-tab-size:7;tab-size:7}.markdown .tab-size[data-tab-size="8"]{-o-tab-size:8;tab-size:8}.markdown .tab-size[data-tab-size="9"]{-o-tab-size:9;tab-size:9}.markdown .tab-size[data-tab-size="10"]{-o-tab-size:10;tab-size:10}.markdown .tab-size[data-tab-size="11"]{-o-tab-size:11;tab-size:11}.markdown .tab-size[data-tab-size="12"]{-o-tab-size:12;tab-size:12}.markdown .task-list-item{list-style-type:none}.markdown .task-list-item+.task-list-item{margin-top:3px}.markdown .task-list-item input{margin:0 .2em .25em -1.6em;vertical-align:middle}.markdown div.gatsby-highlight{margin-bottom:32px}.markdown .table-of-contents{align-items:flex-start;display:flex;flex-direction:column;justify-content:center;position:fixed;right:0;top:75px;width:340px}@media(max-width:1300px){.markdown .table-of-contents{display:none}}.markdown .table-of-contents ul{cursor:pointer;list-style-type:none}.markdown .table-of-contents ul li a{border-bottom:none;color:var(--secondary-text-color);font-size:14px;height:30px;padding:6px 2px;width:100%}.markdown .table-of-contents ul p{margin:0}.markdown .gatsby-resp-image-wrapper{display:flex!important;justify-content:center!important;max-height:560px!important;width:100%!important}.markdown .gatsby-resp-image-wrapper img{height:auto!important;max-height:560px!important;max-width:100%!important;position:relative!important;width:auto!important}.markdown .gatsby-resp-image-wrapper+em{color:#6a737d;display:block;font-size:15px;font-style:italic;text-align:center}code[class*=language-],pre[class*=language-]{word-wrap:normal;background:none;color:#ccc;font-family:Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;font-size:1em;-webkit-hyphens:none;hyphens:none;line-height:1.5;-o-tab-size:4;tab-size:4;text-align:left;white-space:pre;word-break:normal;word-spacing:normal}pre[class*=language-]{margin:.5em 0;overflow:auto;padding:1em}:not(pre)>code[class*=language-],pre[class*=language-]{background:#2d2d2d}:not(pre)>code[class*=language-]{border-radius:.3em;padding:.1em;white-space:normal}.token.block-comment,.token.cdata,.token.comment,.token.doctype,.token.prolog{color:#999}.token.punctuation{color:#ccc}.token.attr-name,.token.deleted,.token.namespace,.token.tag{color:#e2777a}.token.function-name{color:#6196cc}.token.boolean,.token.function,.token.number{color:#f08d49}.token.class-name,.token.constant,.token.property,.token.symbol{color:#f8c555}.token.atrule,.token.builtin,.token.important,.token.keyword,.token.selector{color:#cc99cd}.token.attr-value,.token.char,.token.regex,.token.string,.token.variable{color:#7ec699}.token.entity,.token.operator,.token.url{color:#67cdcc}.token.bold,.token.important{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}.token.inserted{color:green}.post-content{display:flex;flex-direction:column;justify-content:center;margin-bottom:40px;width:100%}.utterances{margin-top:20px}.category-page-header-wrapper{align-items:center;display:flex;flex-direction:column;justify-content:center;margin-bottom:30px;margin-top:30px}.category-page-header-wrapper .category-page-title{border-bottom:3px solid var(--primary-text-color);font-size:40px;font-weight:700;margin-bottom:15px;padding-bottom:7px;text-align:center;width:-webkit-fit-content;width:-moz-fit-content;width:fit-content}.category-page-header-wrapper .category-page-subtitle{font-size:20px;font-weight:500;padding-bottom:10px;text-align:center}.post-card-wrapper{display:flex;justify-content:center;min-height:150px;width:100%}.post-card-wrapper .post-card{border:1px solid var(--post-card-border-color);border-radius:6px;color:var(--primary-text-color);cursor:pointer;display:flex;flex-direction:column;height:100%;margin-bottom:15px;max-width:720px;padding:15px;transition:transform .2s;width:100%}.post-card-wrapper .post-card:hover .title{text-decoration:underline}@media(min-width:768px){.post-card-wrapper .post-card{margin-bottom:0}}.post-card-wrapper .post-card .title{font-size:18px;font-weight:600;line-height:1.4;margin-bottom:7px}.post-card-wrapper .post-card .description{-webkit-line-clamp:3;-webkit-box-orient:vertical;color:var(--primary-text-color);display:-webkit-box;font-size:13px;line-height:20px;margin-bottom:10px;overflow:hidden;text-overflow:ellipsis}.post-card-wrapper .post-card .info{color:var(--about-link-icon-color);display:flex;font-size:14px;justify-content:space-between;margin-top:auto}.post-card-wrapper .post-card .info .categories{display:flex}.post-card-wrapper .post-card .info .categories .category{margin-left:4px}.post-card-wrapper .post-card .info .categories .category:hover{text-decoration:underline}.post-card-column-wrapper{display:flex;justify-content:center;width:100%}.post-card-column-wrapper .post-card-column{align-items:center;display:flex;flex-direction:column;width:100%}.post-card-column-wrapper .post-card-column .post-card-wrapper{margin-bottom:10px}.post-card-column-wrapper .post-card-column .more-post-card-button{background-color:var(--button-background-color);color:var(--tab-hover-text-color);font-size:15px;font-weight:500;height:40px}.post-tabs-wrapper{align-self:flex-start;display:flex;flex-direction:column;justify-content:center;top:0;width:100%}.post-tabs-wrapper .post-tabs{display:flex;height:40px;justify-content:center;margin-bottom:12px;max-width:760px;width:100%}.post-tabs-wrapper .post-tabs .mui-tabs .MuiTab-root{color:var(--tab-text-color);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;font-size:17px;font-weight:500;height:40px;min-height:auto;min-width:auto;padding:10px 12px;transition:all .2s ease}.post-tabs-wrapper .post-tabs .mui-tabs .Mui-selected,.post-tabs-wrapper .post-tabs .mui-tabs .MuiTab-root :hover{color:var(--tab-hover-text-color);transition:all .2s ease}.post-tabs-wrapper .post-tabs .mui-tabs .Mui-selected{background-color:var(--tab-selected-background-color);border-radius:8px;font-weight:600}.post-tabs-wrapper .post-tabs .mui-tabs .MuiTabScrollButton-root{height:40px;width:20px}.post-tabs-wrapper .post-tabs .mui-tabs .MuiTabs-scrollable{height:40px}.post-tabs-wrapper .post-tabs .mui-tabs .MuiTabs-indicator{display:none}</style><style data-emotion="css-global o6gwfi">html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;box-sizing:border-box;-webkit-text-size-adjust:100%;}*,*::before,*::after{box-sizing:inherit;}strong,b{font-weight:700;}body{margin:0;color:rgba(0, 0, 0, 0.87);font-family:"Roboto","Helvetica","Arial",sans-serif;font-weight:400;font-size:1rem;line-height:1.5;letter-spacing:0.00938em;background-color:#fff;}@media print{body{background-color:#fff;}}body::backdrop{background-color:#fff;}</style><style data-emotion="css-global 1prfaxn">@-webkit-keyframes mui-auto-fill{from{display:block;}}@keyframes mui-auto-fill{from{display:block;}}@-webkit-keyframes mui-auto-fill-cancel{from{display:block;}}@keyframes mui-auto-fill-cancel{from{display:block;}}</style><style data-emotion="css 18nc3u2 feqhe6 12rx5qu mnn31 vubbuv 1j7qk7u 1yxmbwk 6flbmm">.css-18nc3u2.Mui-focused .MuiAutocomplete-clearIndicator{visibility:visible;}@media (pointer: fine){.css-18nc3u2:hover .MuiAutocomplete-clearIndicator{visibility:visible;}}.css-18nc3u2 .MuiAutocomplete-tag{margin:3px;max-width:calc(100% - 6px);}.css-18nc3u2 .MuiAutocomplete-inputRoot{-webkit-box-flex-wrap:wrap;-webkit-flex-wrap:wrap;-ms-flex-wrap:wrap;flex-wrap:wrap;}.MuiAutocomplete-hasPopupIcon.css-18nc3u2 .MuiAutocomplete-inputRoot,.MuiAutocomplete-hasClearIcon.css-18nc3u2 .MuiAutocomplete-inputRoot{padding-right:30px;}.MuiAutocomplete-hasPopupIcon.MuiAutocomplete-hasClearIcon.css-18nc3u2 .MuiAutocomplete-inputRoot{padding-right:56px;}.css-18nc3u2 .MuiAutocomplete-inputRoot .MuiAutocomplete-input{width:0;min-width:30px;}.css-18nc3u2 .MuiInput-root{padding-bottom:1px;}.css-18nc3u2 .MuiInput-root .MuiInput-input{padding:4px 4px 4px 0px;}.css-18nc3u2 .MuiInput-root.MuiInputBase-sizeSmall .MuiInput-input{padding:2px 4px 3px 0;}.css-18nc3u2 .MuiOutlinedInput-root{padding:9px;}.MuiAutocomplete-hasPopupIcon.css-18nc3u2 .MuiOutlinedInput-root,.MuiAutocomplete-hasClearIcon.css-18nc3u2 .MuiOutlinedInput-root{padding-right:39px;}.MuiAutocomplete-hasPopupIcon.MuiAutocomplete-hasClearIcon.css-18nc3u2 .MuiOutlinedInput-root{padding-right:65px;}.css-18nc3u2 .MuiOutlinedInput-root .MuiAutocomplete-input{padding:7.5px 4px 7.5px 5px;}.css-18nc3u2 .MuiOutlinedInput-root .MuiAutocomplete-endAdornment{right:9px;}.css-18nc3u2 .MuiOutlinedInput-root.MuiInputBase-sizeSmall{padding-top:6px;padding-bottom:6px;padding-left:6px;}.css-18nc3u2 .MuiOutlinedInput-root.MuiInputBase-sizeSmall .MuiAutocomplete-input{padding:2.5px 4px 2.5px 8px;}.css-18nc3u2 .MuiFilledInput-root{padding-top:19px;padding-left:8px;}.MuiAutocomplete-hasPopupIcon.css-18nc3u2 .MuiFilledInput-root,.MuiAutocomplete-hasClearIcon.css-18nc3u2 .MuiFilledInput-root{padding-right:39px;}.MuiAutocomplete-hasPopupIcon.MuiAutocomplete-hasClearIcon.css-18nc3u2 .MuiFilledInput-root{padding-right:65px;}.css-18nc3u2 .MuiFilledInput-root .MuiFilledInput-input{padding:7px 4px;}.css-18nc3u2 .MuiFilledInput-root .MuiAutocomplete-endAdornment{right:9px;}.css-18nc3u2 .MuiFilledInput-root.MuiInputBase-sizeSmall{padding-bottom:1px;}.css-18nc3u2 .MuiFilledInput-root.MuiInputBase-sizeSmall .MuiFilledInput-input{padding:2.5px 4px;}.css-18nc3u2 .MuiInputBase-hiddenLabel{padding-top:8px;}.css-18nc3u2 .MuiFilledInput-root.MuiInputBase-hiddenLabel{padding-top:0;padding-bottom:0;}.css-18nc3u2 .MuiFilledInput-root.MuiInputBase-hiddenLabel .MuiAutocomplete-input{padding-top:16px;padding-bottom:17px;}.css-18nc3u2 .MuiFilledInput-root.MuiInputBase-hiddenLabel.MuiInputBase-sizeSmall .MuiAutocomplete-input{padding-top:8px;padding-bottom:9px;}.css-18nc3u2 .MuiAutocomplete-input{-webkit-box-flex:1;-webkit-flex-grow:1;-ms-flex-positive:1;flex-grow:1;text-overflow:ellipsis;opacity:1;}.css-feqhe6{display:-webkit-inline-box;display:-webkit-inline-flex;display:-ms-inline-flexbox;display:inline-flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;position:relative;min-width:0;padding:0;margin:0;border:0;vertical-align:top;width:100%;}.css-12rx5qu{font-family:"Roboto","Helvetica","Arial",sans-serif;font-weight:400;font-size:1rem;line-height:1.4375em;letter-spacing:0.00938em;color:rgba(0, 0, 0, 0.87);box-sizing:border-box;position:relative;cursor:text;display:-webkit-inline-box;display:-webkit-inline-flex;display:-ms-inline-flexbox;display:inline-flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;width:100%;position:relative;}.css-12rx5qu.Mui-disabled{color:rgba(0, 0, 0, 0.38);cursor:default;}label+.css-12rx5qu{margin-top:16px;}.css-12rx5qu:after{border-bottom:2px solid #1976d2;left:0;bottom:0;content:"";position:absolute;right:0;-webkit-transform:scaleX(0);-moz-transform:scaleX(0);-ms-transform:scaleX(0);transform:scaleX(0);-webkit-transition:-webkit-transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;transition:transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;pointer-events:none;}.css-12rx5qu.Mui-focused:after{-webkit-transform:scaleX(1) translateX(0);-moz-transform:scaleX(1) translateX(0);-ms-transform:scaleX(1) translateX(0);transform:scaleX(1) translateX(0);}.css-12rx5qu.Mui-error:before,.css-12rx5qu.Mui-error:after{border-bottom-color:#d32f2f;}.css-12rx5qu:before{border-bottom:1px solid rgba(0, 0, 0, 0.42);left:0;bottom:0;content:"\00a0";position:absolute;right:0;-webkit-transition:border-bottom-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;transition:border-bottom-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;pointer-events:none;}.css-12rx5qu:hover:not(.Mui-disabled, .Mui-error):before{border-bottom:2px solid rgba(0, 0, 0, 0.87);}@media (hover: none){.css-12rx5qu:hover:not(.Mui-disabled, .Mui-error):before{border-bottom:1px solid rgba(0, 0, 0, 0.42);}}.css-12rx5qu.Mui-disabled:before{border-bottom-style:dotted;}.css-mnn31{font:inherit;letter-spacing:inherit;color:currentColor;padding:4px 0 5px;border:0;box-sizing:content-box;background:none;height:1.4375em;margin:0;-webkit-tap-highlight-color:transparent;display:block;min-width:0;width:100%;-webkit-animation-name:mui-auto-fill-cancel;animation-name:mui-auto-fill-cancel;-webkit-animation-duration:10ms;animation-duration:10ms;}.css-mnn31::-webkit-input-placeholder{color:currentColor;opacity:0.42;-webkit-transition:opacity 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;transition:opacity 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;}.css-mnn31::-moz-placeholder{color:currentColor;opacity:0.42;-webkit-transition:opacity 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;transition:opacity 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;}.css-mnn31:-ms-input-placeholder{color:currentColor;opacity:0.42;-webkit-transition:opacity 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;transition:opacity 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;}.css-mnn31::-ms-input-placeholder{color:currentColor;opacity:0.42;-webkit-transition:opacity 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;transition:opacity 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;}.css-mnn31:focus{outline:0;}.css-mnn31:invalid{box-shadow:none;}.css-mnn31::-webkit-search-decoration{-webkit-appearance:none;}label[data-shrink=false]+.MuiInputBase-formControl .css-mnn31::-webkit-input-placeholder{opacity:0!important;}label[data-shrink=false]+.MuiInputBase-formControl .css-mnn31::-moz-placeholder{opacity:0!important;}label[data-shrink=false]+.MuiInputBase-formControl .css-mnn31:-ms-input-placeholder{opacity:0!important;}label[data-shrink=false]+.MuiInputBase-formControl .css-mnn31::-ms-input-placeholder{opacity:0!important;}label[data-shrink=false]+.MuiInputBase-formControl .css-mnn31:focus::-webkit-input-placeholder{opacity:0.42;}label[data-shrink=false]+.MuiInputBase-formControl .css-mnn31:focus::-moz-placeholder{opacity:0.42;}label[data-shrink=false]+.MuiInputBase-formControl .css-mnn31:focus:-ms-input-placeholder{opacity:0.42;}label[data-shrink=false]+.MuiInputBase-formControl .css-mnn31:focus::-ms-input-placeholder{opacity:0.42;}.css-mnn31.Mui-disabled{opacity:1;-webkit-text-fill-color:rgba(0, 0, 0, 0.38);}.css-mnn31:-webkit-autofill{-webkit-animation-duration:5000s;animation-duration:5000s;-webkit-animation-name:mui-auto-fill;animation-name:mui-auto-fill;}.css-vubbuv{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;width:1em;height:1em;display:inline-block;fill:currentColor;-webkit-flex-shrink:0;-ms-flex-negative:0;flex-shrink:0;-webkit-transition:fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;transition:fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;font-size:1.5rem;}.css-1j7qk7u{display:-webkit-inline-box;display:-webkit-inline-flex;display:-ms-inline-flexbox;display:inline-flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;position:relative;box-sizing:border-box;-webkit-tap-highlight-color:transparent;background-color:transparent;outline:0;border:0;margin:0;border-radius:0;padding:0;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;vertical-align:middle;-moz-appearance:none;-webkit-appearance:none;-webkit-text-decoration:none;text-decoration:none;color:inherit;text-align:center;-webkit-flex:0 0 auto;-ms-flex:0 0 auto;flex:0 0 auto;font-size:1.5rem;padding:8px;border-radius:50%;overflow:visible;color:rgba(0, 0, 0, 0.54);-webkit-transition:background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;transition:background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;padding:5px;font-size:1.125rem;}.css-1j7qk7u::-moz-focus-inner{border-style:none;}.css-1j7qk7u.Mui-disabled{pointer-events:none;cursor:default;}@media print{.css-1j7qk7u{-webkit-print-color-adjust:exact;color-adjust:exact;}}.css-1j7qk7u:hover{background-color:rgba(0, 0, 0, 0.04);}@media (hover: none){.css-1j7qk7u:hover{background-color:transparent;}}.css-1j7qk7u.Mui-disabled{background-color:transparent;color:rgba(0, 0, 0, 0.26);}.css-1yxmbwk{display:-webkit-inline-box;display:-webkit-inline-flex;display:-ms-inline-flexbox;display:inline-flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;position:relative;box-sizing:border-box;-webkit-tap-highlight-color:transparent;background-color:transparent;outline:0;border:0;margin:0;border-radius:0;padding:0;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;vertical-align:middle;-moz-appearance:none;-webkit-appearance:none;-webkit-text-decoration:none;text-decoration:none;color:inherit;text-align:center;-webkit-flex:0 0 auto;-ms-flex:0 0 auto;flex:0 0 auto;font-size:1.5rem;padding:8px;border-radius:50%;overflow:visible;color:rgba(0, 0, 0, 0.54);-webkit-transition:background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;transition:background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;}.css-1yxmbwk::-moz-focus-inner{border-style:none;}.css-1yxmbwk.Mui-disabled{pointer-events:none;cursor:default;}@media print{.css-1yxmbwk{-webkit-print-color-adjust:exact;color-adjust:exact;}}.css-1yxmbwk:hover{background-color:rgba(0, 0, 0, 0.04);}@media (hover: none){.css-1yxmbwk:hover{background-color:transparent;}}.css-1yxmbwk.Mui-disabled{background-color:transparent;color:rgba(0, 0, 0, 0.26);}.css-6flbmm{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;width:1em;height:1em;display:inline-block;fill:currentColor;-webkit-flex-shrink:0;-ms-flex-negative:0;flex-shrink:0;-webkit-transition:fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;transition:fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;font-size:2.1875rem;}</style><link rel="preconnect" href="https://www.google-analytics.com"/><link rel="dns-prefetch" href="https://www.google-analytics.com"/><script>
+  
+  function gaOptout(){document.cookie=disableStr+'=true; expires=Thu, 31 Dec 2099 23:59:59 UTC;path=/',window[disableStr]=!0}var gaProperty='UA-273267273-1',disableStr='ga-disable-'+gaProperty;document.cookie.indexOf(disableStr+'=true')>-1&&(window[disableStr]=!0);
+  if(true) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  }
+  if (typeof ga === "function") {
+    ga('create', 'UA-273267273-1', 'auto', {});
+      ga('set', 'anonymizeIp', true);
+      
+      
+      
+      
+      }</script><link rel="icon" href="/favicon-32x32.png?v=cda50244e941ac151a8b624d180621c0" type="image/png"/><link rel="manifest" href="/manifest.webmanifest" crossorigin="anonymous"/><link rel="apple-touch-icon" sizes="48x48" href="/icons/icon-48x48.png?v=cda50244e941ac151a8b624d180621c0"/><link rel="apple-touch-icon" sizes="72x72" href="/icons/icon-72x72.png?v=cda50244e941ac151a8b624d180621c0"/><link rel="apple-touch-icon" sizes="96x96" href="/icons/icon-96x96.png?v=cda50244e941ac151a8b624d180621c0"/><link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144x144.png?v=cda50244e941ac151a8b624d180621c0"/><link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png?v=cda50244e941ac151a8b624d180621c0"/><link rel="apple-touch-icon" sizes="256x256" href="/icons/icon-256x256.png?v=cda50244e941ac151a8b624d180621c0"/><link rel="apple-touch-icon" sizes="384x384" href="/icons/icon-384x384.png?v=cda50244e941ac151a8b624d180621c0"/><link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512x512.png?v=cda50244e941ac151a8b624d180621c0"/><style type="text/css">
+    .anchor.before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translateX(-100%);
+      padding-right: 4px;
+    }
+    .anchor.after {
+      display: inline-block;
+      padding-left: 4px;
+    }
+    h1 .anchor svg,
+    h2 .anchor svg,
+    h3 .anchor svg,
+    h4 .anchor svg,
+    h5 .anchor svg,
+    h6 .anchor svg {
+      visibility: hidden;
+    }
+    h1:hover .anchor svg,
+    h2:hover .anchor svg,
+    h3:hover .anchor svg,
+    h4:hover .anchor svg,
+    h5:hover .anchor svg,
+    h6:hover .anchor svg,
+    h1 .anchor:focus svg,
+    h2 .anchor:focus svg,
+    h3 .anchor:focus svg,
+    h4 .anchor:focus svg,
+    h5 .anchor:focus svg,
+    h6 .anchor:focus svg {
+      visibility: visible;
+    }
+  </style><script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+      var hash = window.decodeURI(location.hash.replace('#', ''))
+      if (hash !== '') {
+        var element = document.getElementById(hash)
+        if (element) {
+          var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+          var clientTop = document.documentElement.clientTop || document.body.clientTop || 0
+          var offset = element.getBoundingClientRect().top + scrollTop - clientTop
+          // Wait for the browser to finish rendering before scrolling.
+          setTimeout((function() {
+            window.scrollTo(0, offset - 0)
+          }), 0)
+        }
+      }
+    })
+  </script><link rel="preload" as="font" type="font/woff2" crossorigin="anonymous" href="/static/webfonts/s/roboto/v30/KFOlCnqEu92Fr1MmSU5fBBc4.woff2"/><link rel="preload" as="font" type="font/woff2" crossorigin="anonymous" href="/static/webfonts/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff2"/><link rel="preload" as="font" type="font/woff2" crossorigin="anonymous" href="/static/webfonts/s/roboto/v30/KFOlCnqEu92Fr1MmEU9fBBc4.woff2"/><style>@font-face{font-display:swap;font-family:Roboto;font-style:normal;font-weight:300;src:url(/static/webfonts/s/roboto/v30/KFOlCnqEu92Fr1MmSU5fBBc4.woff2) format("woff2")}@font-face{font-display:swap;font-family:Roboto;font-style:normal;font-weight:400;src:url(/static/webfonts/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff2) format("woff2")}@font-face{font-display:swap;font-family:Roboto;font-style:normal;font-weight:500;src:url(/static/webfonts/s/roboto/v30/KFOlCnqEu92Fr1MmEU9fBBc4.woff2) format("woff2")}@font-face{font-display:swap;font-family:Roboto;font-style:normal;font-weight:300;src:url(/static/webfonts/s/roboto/v30/KFOlCnqEu92Fr1MmSU5fBBc-.woff) format("woff")}@font-face{font-display:swap;font-family:Roboto;font-style:normal;font-weight:400;src:url(/static/webfonts/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxM.woff) format("woff")}@font-face{font-display:swap;font-family:Roboto;font-style:normal;font-weight:500;src:url(/static/webfonts/s/roboto/v30/KFOlCnqEu92Fr1MmEU9fBBc-.woff) format("woff")}</style><link rel="sitemap" type="application/xml" href="/sitemap.xml"/><style>.gatsby-image-wrapper{position:relative;overflow:hidden}.gatsby-image-wrapper picture.object-fit-polyfill{position:static!important}.gatsby-image-wrapper img{bottom:0;height:100%;left:0;margin:0;max-width:none;padding:0;position:absolute;right:0;top:0;width:100%;object-fit:cover}.gatsby-image-wrapper [data-main-image]{opacity:0;transform:translateZ(0);transition:opacity .25s linear;will-change:opacity}.gatsby-image-wrapper-constrained{display:inline-block;vertical-align:top}</style><noscript><style>.gatsby-image-wrapper noscript [data-main-image]{opacity:1!important}.gatsby-image-wrapper [data-placeholder-image]{opacity:0!important}</style></noscript><script type="module">const e="undefined"!=typeof HTMLImageElement&&"loading"in HTMLImageElement.prototype;e&&document.body.addEventListener("load",(function(e){const t=e.target;if(void 0===t.dataset.mainImage)return;if(void 0===t.dataset.gatsbyImageSsr)return;let a=null,n=t;for(;null===a&&n;)void 0!==n.parentNode.dataset.gatsbyImageWrapper&&(a=n.parentNode),n=n.parentNode;const o=a.querySelector("[data-placeholder-image]"),r=new Image;r.src=t.currentSrc,r.decode().catch((()=>{})).then((()=>{t.style.opacity=1,o&&(o.style.opacity=0,o.style.transition="opacity 500ms linear")}))}),!0);</script><title data-react-helmet="true">OCI ubuntu 인스턴스 SSH 접속 장애 조치</title></head><body><div id="___gatsby"><div style="outline:none" tabindex="-1" id="gatsby-focus-wrapper"><div class="page-wrapper"><header class="page-header-wrapper"><div class="page-header"><div class="front-section"><a class="link" href="/">🍯heony704</a></div><div class="trailing-section"><div class="MuiAutocomplete-root MuiAutocomplete-hasPopupIcon css-18nc3u2"><div class="search-input-wrapper"><div class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root search-input css-feqhe6"><div class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-adornedEnd MuiAutocomplete-inputRoot css-12rx5qu"><input type="text" aria-invalid="false" autoComplete="off" value="" class="MuiInputBase-input MuiInput-input MuiInputBase-inputAdornedEnd MuiAutocomplete-input MuiAutocomplete-inputFocused css-mnn31" aria-autocomplete="list" aria-expanded="false" autoCapitalize="none" spellcheck="false" role="combobox"/><svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium search-icon css-vubbuv" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="SearchOutlinedIcon"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg></div></div></div></div></div></div></header><main class="page-content"><header class="post-header"><div class="info"><div class="categories"><a class="category" href="/posts/oci">oci</a></div></div><h1 class="title">OCI ubuntu 인스턴스 SSH 접속 장애 조치</h1><div class="info">April 15, 2022</div></header><div class="post-content"><div class="markdown"><blockquote>
+<p>클라우드: Oracle Cloud Infrastructure<br>
+이미지: Canonical Ubuntu 20.04</p>
+</blockquote>
+<p>OCI ubuntu 인스턴스에 올려놓은 애플리케이션이 갑자기 작동을 멈췄다.<br>
+확인하려고 PuTTY로 접속했는데 서버의 public key랑 private key가 일치하지 않는다고 떴다.<br>
+분명 과거에 일치했었고 세션에 저장까지 해둔 key인데..!<br>
+해킹된건지 뭐 때문인지 감이 안잡혀서 부트 볼륨을 떼서 분석해보기로 했다.</p>
+<p>해당 인스턴스로 SSH 접속이 불가능한 상태이기 때문에 드라이브를 분리한 뒤 다음 과정대로 트러블슈팅했다.</p>
+<ol>
+<li>장애가 발생한 인스턴스의 부트 볼륨을 분리</li>
+<li>해당 부트 볼륨을 다른 멀쩡한 인스턴스의 블록 볼륨에 연결</li>
+<li>디렉토리 마운트 &#x26; SSH 키 새로 생성</li>
+</ol>
+<h2 id="드라이브-분리하기" style="position:relative;"><a href="#%EB%93%9C%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EB%B6%84%EB%A6%AC%ED%95%98%EA%B8%B0" aria-label="드라이브 분리하기 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>드라이브 분리하기</h2>
+<p>장애가 발생한 인스턴스의 부트 볼륨 탭에 들어간다.</p>
+<blockquote>
+<p><strong>부트 볼륨</strong>이란?<br>
+컴퓨트 인스턴스 부트를 위해 사용되는 이미지가 포함된 스토리지 장치</p>
+</blockquote>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 720px; "
+    >
+      <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 35%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAHCAYAAAAIy204AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA5ElEQVQoz6WQ3W7DIAxGef8H3bSsTWDBBv+Qb8Jpu3ZXk3ZxZGzAOnZSEbgZ3B1mhnXLKKVARF5Q1WC+iXg7P+czpsodrf9cvi8XbNsaTfZ9BxFFzDmji2CMAfcT1VNm1sY4opbWXTAZ7tBpWAjLJSOXAm6M1joqEYgYtVZwayDmsOEm2KpgzRXXNeNaCGkpHbVpNAxLH2hd0HuH+Wk91zEtVO1ldAuJge3zgvVjATMjfbGgiT52GCO4R+7mj/q98TMW43oYV6owP5AKSRjGg18f/oLdVnW44W1jJOoahneL/6H4BmHnI87oAaugAAAAAElFTkSuQmCC'); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="부트 볼륨의 부트 볼륨 분리 버튼"
+        title="부트 볼륨의 부트 볼륨 분리 버튼"
+        src="/static/23300f81d2ab3688257862c3c46b6702/37523/oci-boot-volume.png"
+        srcset="/static/23300f81d2ab3688257862c3c46b6702/e9ff0/oci-boot-volume.png 180w,
+/static/23300f81d2ab3688257862c3c46b6702/f21e7/oci-boot-volume.png 360w,
+/static/23300f81d2ab3688257862c3c46b6702/37523/oci-boot-volume.png 720w,
+/static/23300f81d2ab3688257862c3c46b6702/302a4/oci-boot-volume.png 1080w,
+/static/23300f81d2ab3688257862c3c46b6702/07a9c/oci-boot-volume.png 1440w,
+/static/23300f81d2ab3688257862c3c46b6702/46435/oci-boot-volume.png 1885w"
+        sizes="(max-width: 720px) 100vw, 720px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+        decoding="async"
+      />
+    </span></p>
+<p>해당 부트 볼륨을 분리해준다.</p>
+<h2 id="다른-인스턴스에-드라이브-연결하기" style="position:relative;"><a href="#%EB%8B%A4%EB%A5%B8-%EC%9D%B8%EC%8A%A4%ED%84%B4%EC%8A%A4%EC%97%90-%EB%93%9C%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EC%97%B0%EA%B2%B0%ED%95%98%EA%B8%B0" aria-label="다른 인스턴스에 드라이브 연결하기 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>다른 인스턴스에 드라이브 연결하기</h2>
+<p>멀쩡한 인스턴스의 연결된 블록 볼륨 탭에서 블록 볼륨 연결을 누르면, 연결할 수 있는 볼륨들을 확인할 수 있다.</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 720px; "
+    >
+      <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 55.55555555555556%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAYAAAB/Ca1DAAAACXBIWXMAAA7DAAAOwwHHb6hkAAABt0lEQVQoz3WSzXLaMBSF/czddNFVXyAz3TQs2gaSOIBjyZCZdtGXAQqWbWiIZYiNwfbXkQqp81PNfCNdLc6ce+9xRqMRhiAILKe3e+Piui79fh9v6DGdTIiThOl0SpIkaJ1R1zWHw4Gqqp5w2kJtcSEkQh4RgjAM2W42pKnm8fGRvCgoyz1lWT7D8X0fQ9ullJJet8vVxRe6F98473SYz+fc36+haYCGpq5omvoVzq0IcIcCX5ycGsGAj58HfPh0xddrj5EU/FooJmpNtPxNvFozSzS6qDg0UNawP+IYsU7P43Ignlo2Dt+fdXl3dsN5b8B4JAlDxULFTGczFqFiHsaEUYyyJPYdqgjHOLseCkatORqn38eSnz/uGAfSzlMpxcN6zWq1srPMdEqmNVqnpOkDeZ6zKwqcW1/aloMXgoFxGph6bP+iKEZrbWdpthzbOqNpGrtdcxteCZ4W067NCOL4r+ByuWS73VIUBbvdjv1+b/m3ZSHpewLZEmhH6PSnVIQ5p9wZN3Xd2Cy2cTxfctn3Mdt+GfB2bQSNw6LIj4GungX6zWD/z525TbB1lrHJS+r6bTEj+AcLh/Nb+FY1jwAAAABJRU5ErkJggg=='); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="블록 볼륨 연결 탭에 표시된 연결할 수 있는 볼륨들"
+        title="블록 볼륨 연결 탭에 표시된 연결할 수 있는 볼륨들"
+        src="/static/b34d282b6615fc9b646921ab2b6d705b/37523/oci-block-volume-connect.png"
+        srcset="/static/b34d282b6615fc9b646921ab2b6d705b/e9ff0/oci-block-volume-connect.png 180w,
+/static/b34d282b6615fc9b646921ab2b6d705b/f21e7/oci-block-volume-connect.png 360w,
+/static/b34d282b6615fc9b646921ab2b6d705b/37523/oci-block-volume-connect.png 720w,
+/static/b34d282b6615fc9b646921ab2b6d705b/302a4/oci-block-volume-connect.png 1080w,
+/static/b34d282b6615fc9b646921ab2b6d705b/610c0/oci-block-volume-connect.png 1295w"
+        sizes="(max-width: 720px) 100vw, 720px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+        decoding="async"
+      />
+    </span></p>
+<p>여기서 좀전에 분리한 부트 볼륨을 연결해준다.</p>
+<p>위 까지는 테스트용 인스턴스에 여분의 볼륨을 부착(attach)하는 과정이고, 아래부터는 테스트용 인스턴스와 볼륨을 연결(connect)하는 과정이다.<br>
+구체적으로 알고싶다면 <a href="https://docs.oracle.com/en-us/iaas/Content/Block/Concepts/overview.htm#attachtype">여기</a>를 참고하자.</p>
+<p>연결하기 위해서 테스트용 인스턴스에서 iSCSI 접속 명령을 해준다.</p>
+<blockquote>
+<p><a href="https://docs.oracle.com/en-us/iaas/Content/Block/Concepts/iscsiinformation.htm">iSCSI</a>란?<br>
+Internet Small Computer System Interface<br>
+볼륨을 인스턴스에 연결하기 위한 <strong>프로토콜</strong></p>
+</blockquote>
+<p>연결한 블록 볼륨에서 <code class="language-text">iSCSI 명령 및 정보</code>를 확인하면 iSCSI 명령어를 알려준다.</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 720px; "
+    >
+      <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 35%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAHCAYAAAAIy204AAAACXBIWXMAAA7DAAAOwwHHb6hkAAABAElEQVQoz41Ru27DMAzU/39If6JT9wIFOnUN0qSRbNeKZb1MyleQdQIX6BABB0onUnekzDj08L2FvXzBOYdlWVBrVdz2EonoIZi3g8fz+wmHs8PVjwjzjBgjUkqKEAJyzmitgZk1rut6P+9BzDAvHz2eXgcMaYWsXCpKKbhOE+YYEVNSAXm0lKpR7oQTR1L1WwlwazAlF1W7WAfrHKYY1KX3XttNOavLGNPmPGuUs/DfPuBkB9huROdnmLIwUmXElNUZMd1bEKF9a7Tjb5yIH4+fcM6i8wGG9QFCa9ssiLcB8z9D/8tJvnzYNE2gpeLsKwxtyvukh7DlUq0K5qa//AMJlSDWtHvvgQAAAABJRU5ErkJggg=='); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="연결된 블록 볼륨의 iSCSI 명령 및 정보 버튼"
+        title="연결된 블록 볼륨의 iSCSI 명령 및 정보 버튼"
+        src="/static/d84f41b8030e010dbecdac4e71a2b5db/37523/oci-connected-block-volume.png"
+        srcset="/static/d84f41b8030e010dbecdac4e71a2b5db/e9ff0/oci-connected-block-volume.png 180w,
+/static/d84f41b8030e010dbecdac4e71a2b5db/f21e7/oci-connected-block-volume.png 360w,
+/static/d84f41b8030e010dbecdac4e71a2b5db/37523/oci-connected-block-volume.png 720w,
+/static/d84f41b8030e010dbecdac4e71a2b5db/302a4/oci-connected-block-volume.png 1080w,
+/static/d84f41b8030e010dbecdac4e71a2b5db/07a9c/oci-connected-block-volume.png 1440w,
+/static/d84f41b8030e010dbecdac4e71a2b5db/6bfbb/oci-connected-block-volume.png 1514w"
+        sizes="(max-width: 720px) 100vw, 720px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+        decoding="async"
+      />
+    </span></p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 720px; "
+    >
+      <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 73.88888888888889%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAPCAYAAADkmO9VAAAACXBIWXMAABJ0AAASdAHeZh94AAACK0lEQVQ4y51TW46bQBDkAjlBTpfz5Cj5yVeUK0TKf1YbBYwNODbzngHmAVTUba+zf1kFqZjumaaofkyVUsI8z3DOIeWMUgryf6CUFcRVrduGaZ4hxRXYV9ye/dX6dpCYqojvyN8+ANnAOwtvFayR0GqEdxrOKARv4KyC0YLPrBbwVmMOFsFp/iYtHiVHVLn/iunze+RJoD32+Pn8jObQ4tR1kEpBCAkhBKRUGIVgexxvvlKaY7wPyDmipAVV7r5g+vQOZVEYzlc0dY3T6YS+61HXNZqmQd/3MMYghIBpmuC9Z9s7x3bOBduakImwmGfkHx+xZwfsBdgz9jVhXyOwZfYfwO38sU8+iCxyfMkJ1ZIKTNgQ791eYkSMkTtGKykKhDDBh4B5XngaeD8ExrreOpxzRkWG0ZJTUkrBWstB5NMoXccRvy8XBtlCSjjvuX7jOEJK+fg5E9KLDs7nM9eK1uv1iuPxiF91jfZ4RNu2aJoDBooZBrYPhxbDMDDJNM2sksAKh+GMy+UCzSo1Q2sNpW8rgRRrbR77FEN7MSYmLDzcBRVJJYV0SOlS15ZlYdtYyyRSaU7VGAvrHBTvKRZAsaSM6s83pVBBc2aHDlOKKCU/GsPN8IEVESnNItWYYnl8ponJtu1+U6irpIaK6+5zRarIpgC+gPvLVcTDf41t2/4SEsHT0xO6rrt37XYjKCUipXTe+jAhpUUfUgqR2584VS7BfRReOvgvpJTxB9+tgjWoAvUKAAAAAElFTkSuQmCC'); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="iSCSI 명령어"
+        title="iSCSI 명령어"
+        src="/static/a619945e8ab24c22e55fa7876678533d/37523/oci-connected-block-volume-iscsi-command.png"
+        srcset="/static/a619945e8ab24c22e55fa7876678533d/e9ff0/oci-connected-block-volume-iscsi-command.png 180w,
+/static/a619945e8ab24c22e55fa7876678533d/f21e7/oci-connected-block-volume-iscsi-command.png 360w,
+/static/a619945e8ab24c22e55fa7876678533d/37523/oci-connected-block-volume-iscsi-command.png 720w,
+/static/a619945e8ab24c22e55fa7876678533d/59822/oci-connected-block-volume-iscsi-command.png 916w"
+        sizes="(max-width: 720px) 100vw, 720px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+        decoding="async"
+      />
+    </span></p>
+<p>IP 주소랑 볼륨 IQN을 넣은 명령어를 자동으로 만들어줘서 복사만 하면 된다.<br>
+명령어에 대한 설명은 <a href="https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/connectingtoavolume.htm#Connecting_to_a_Volume">여기</a>에서 참고할 수 있다.</p>
+<p>테스트용 인스턴스에 SSH 접속해서 명령어를 실행했을 때, 아래 같이 successful이라고 뜨면 성공적으로 연결된 것이다.</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 720px; "
+    >
+      <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 9.444444444444445%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAACCAYAAABYBvyLAAAACXBIWXMAABJ0AAASdAHeZh94AAAAcElEQVQI1yWMSwoEIRBDG0TU9lelUmrf/3IDc4bOUM7ikSxecs05obTWwMwgItRa4b3Hfd+IMaL3jv08kDkhIhD55xjjuCGEV7211vfae4OYz4iYzoExBs45WGvPoJSCnDNSSgftinrqWGtf9Yjo8wPTOC6g249A2wAAAABJRU5ErkJggg=='); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="터미널에서 iSCSI 명령어 실행 후 볼륨 연결이 성공한 모습"
+        title="터미널에서 iSCSI 명령어 실행 후 볼륨 연결이 성공한 모습"
+        src="/static/3a6145e14b7d2bde14c12f7e8c63455b/37523/ssh-connect-success.png"
+        srcset="/static/3a6145e14b7d2bde14c12f7e8c63455b/e9ff0/ssh-connect-success.png 180w,
+/static/3a6145e14b7d2bde14c12f7e8c63455b/f21e7/ssh-connect-success.png 360w,
+/static/3a6145e14b7d2bde14c12f7e8c63455b/37523/ssh-connect-success.png 720w,
+/static/3a6145e14b7d2bde14c12f7e8c63455b/302a4/ssh-connect-success.png 1080w,
+/static/3a6145e14b7d2bde14c12f7e8c63455b/f2763/ssh-connect-success.png 1291w"
+        sizes="(max-width: 720px) 100vw, 720px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+        decoding="async"
+      />
+    </span></p>
+<p><code class="language-text">sudo fdisk -l</code> 명령어로 연결된 볼륨 목록을 확인할 수 있다.</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 720px; "
+    >
+      <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 39.44444444444444%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAICAYAAAD5nd/tAAAACXBIWXMAAA7DAAAOwwHHb6hkAAABD0lEQVQoz11RWZKFIAxUQQUCghtv7n/RnuoovnE+UoaY9JJ0IQSklLDkBcxjjBoiAc45xJQgIs8/7z2cv+qs8c26sQZd16Hbjx1nraj1xLZt2PcdZS1Y1xXjOEJiRBBRUL6NMRiGQb8tWO/7/gIky+ycsnEo3YoI2t5UkPOiaubZYVkWxChaf4BarNuqypq68zxRStHmeZ4VxN9k0zTdxAFBAiSKqn0BNmUheG0miNwW/wJ6/3Xx7NK5NxiDlqw1Kp17YyPzx3opyDnD3cu/7EYdHoxR1S+VPMjn56NstK3Dzql1KiJQrVWJcimaH8ehvW0t1tovoA9elfBaHCIjc4K1azLX/9p7rYU1Xve/5V8fFLCq1lPCAwAAAABJRU5ErkJggg=='); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="터미널에 표시된 연결된 볼륨 목록"
+        title="터미널에 표시된 연결된 볼륨 목록"
+        src="/static/4416e12e17de6adfeec1b4f6db0b4b96/37523/connected-volume-list.png"
+        srcset="/static/4416e12e17de6adfeec1b4f6db0b4b96/e9ff0/connected-volume-list.png 180w,
+/static/4416e12e17de6adfeec1b4f6db0b4b96/f21e7/connected-volume-list.png 360w,
+/static/4416e12e17de6adfeec1b4f6db0b4b96/37523/connected-volume-list.png 720w,
+/static/4416e12e17de6adfeec1b4f6db0b4b96/ee9b6/connected-volume-list.png 1041w"
+        sizes="(max-width: 720px) 100vw, 720px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+        decoding="async"
+      />
+    </span></p>
+<p><code class="language-text">/dev/sdb</code>에 잘 연결되어 있다.<br>
+sda, sdb, sdc … 순으로 이름이 정해지는 듯 하다.</p>
+<p>파티셔닝되고 마운트된 상태이므로 다시 파티셔닝하거나 포맷하지 않는다면 더이상 fdisk 명령어를 사용하지 않아도 된다.</p>
+<h2 id="디렉토리-마운트하기" style="position:relative;"><a href="#%EB%94%94%EB%A0%89%ED%86%A0%EB%A6%AC-%EB%A7%88%EC%9A%B4%ED%8A%B8%ED%95%98%EA%B8%B0" aria-label="디렉토리 마운트하기 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>디렉토리 마운트하기</h2>
+<p>디스크 안의 데이터에 접근하기 위해서는 디렉토리 마운트를 해줘야 한다.</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 720px; "
+    >
+      <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 37.222222222222214%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAHCAYAAAAIy204AAAACXBIWXMAABJ0AAASdAHeZh94AAABDUlEQVQoz2VR4Y6GIAwTFUVkMCRRufd/Ph+BXTqPS767H0tZsnVtGZj5iTFKzrklZiEiQZ9SEudW8d6L33fFHbh7WZZFe+ecbNsmIQSZpkmGYZDhPM8n5yxHKY2ZhTML8DgOHVSiEPTIuq4yjqNYa2WeZ0VjzEvUq5TyJE5Q1kBcStECKVSq4vQq7gcwR5EUf5X1IiK1HGNsRFEX0ANhDSqAUNcRVrvdDzJUCP5BVsaYhmUM4aq1s5L2jHpum9+EKKjVaRrFmD+EtabnriTMa8NCrbeGTzHKdV36rl9VLePTzuuQ+yYhWmTfR/F+EGs/FIYHVlPihqCRGXD7+VUMQSGsrs4psffvQef+W/4GxAqa0M76jYUAAAAASUVORK5CYII='); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="터미널에 표시된 연결된 볼륨 목록의 sdb1"
+        title="터미널에 표시된 연결된 볼륨 목록의 sdb1"
+        src="/static/6d6753f6c3db493b3849a9a79358c649/37523/connected-volume-list-dev-sdb1.png"
+        srcset="/static/6d6753f6c3db493b3849a9a79358c649/e9ff0/connected-volume-list-dev-sdb1.png 180w,
+/static/6d6753f6c3db493b3849a9a79358c649/f21e7/connected-volume-list-dev-sdb1.png 360w,
+/static/6d6753f6c3db493b3849a9a79358c649/37523/connected-volume-list-dev-sdb1.png 720w,
+/static/6d6753f6c3db493b3849a9a79358c649/38a65/connected-volume-list-dev-sdb1.png 1075w"
+        sizes="(max-width: 720px) 100vw, 720px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+        decoding="async"
+      />
+    </span></p>
+<p>연결된 볼륨 목록 중 리눅스 파일시스템인 <code class="language-text">sdb1</code>에 접근할 것이다.<br>
+마운트할 디렉토리를 만들고 명령어 <code class="language-text">sudo mount 디스크주소 디렉토리이름주소</code>로 디렉토리 마운트를 해준다.</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 720px; "
+    >
+      <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 20.555555555555554%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAECAYAAACOXx+WAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAuklEQVQY03WMy3LDIBAEl5csWAQIIzuOcsn/f2S7RA6pHHLomplDj3yeJ2PcGWPQWqP3zjgO2t7YeyfnTK11ZkqJdV2JMbIsy+zGGETkl2N8oZpRTcS4TklVp3TtSwwh4Jz9K/7H4zwppVFbp5TOVht13MmlUMaYx9tW0bwjYjHmwmOswywBIw4pBnkIRgKS+wtrV7xX7E255Q19fbDmSmpPfMhYm1iWhvcJ5/QHHwnacJJwz4j59vPwDePJWBz5jR1yAAAAAElFTkSuQmCC'); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="터미널에서 디렉토리 마운트하는 모습"
+        title="터미널에서 디렉토리 마운트하는 모습"
+        src="/static/f03772c4f30b873522fabe7170cc6588/37523/mount-directory.png"
+        srcset="/static/f03772c4f30b873522fabe7170cc6588/e9ff0/mount-directory.png 180w,
+/static/f03772c4f30b873522fabe7170cc6588/f21e7/mount-directory.png 360w,
+/static/f03772c4f30b873522fabe7170cc6588/37523/mount-directory.png 720w,
+/static/f03772c4f30b873522fabe7170cc6588/302a4/mount-directory.png 1080w,
+/static/f03772c4f30b873522fabe7170cc6588/95e27/mount-directory.png 1199w"
+        sizes="(max-width: 720px) 100vw, 720px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+        decoding="async"
+      />
+    </span></p>
+<p>만들어둔 디렉토리에 들어가면 <code class="language-text">sdb1</code> 데이터에 접근할 수 있다.<br>
+SSH 접속이 안되는 문제를 확인하기 위해서 <code class="language-text">.ssh</code> 디렉토리의 <code class="language-text">authorized_keys</code> 파일을 확인해봤다.</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 720px; "
+    >
+      <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 30.555555555555554%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAGCAYAAADDl76dAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA9ElEQVQY011PyXLFIAwjCVkwawhb0///TnVs+nroQYPHErKkiCzO8xRc14XnyUgpgayFtYQ73wghIMSAnG9470GW/vTbpnGcBvu+QykFZcwkj+MQMsaG6yIsi4IxHs5FbNuK83Lw/obWG9aVsQqWZcW+O5nFsJQiqWqtkizngpgSDBkY4pROEqbE6QKIDIgIetfT4D+m0KPUAjZn5JxhnZM9Vw0xyjGG5/ohwPnJC0KYR7SGar0hPxl9dPTe8TzPnEdHrQVjDNmzbnwNacLz1/uKprU6+dbkVe/3K5/q74IJBhuzIe8qf5IDVRow/5lZ9wE3+wEGQItu1qHEkAAAAABJRU5ErkJggg=='); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="터미널에서 authorized_keys 파일을 확인하는 모습"
+        title="터미널에서 authorized_keys 파일을 확인하는 모습"
+        src="/static/c246e3201a4db80a8c258453b783b98b/37523/authorized_keys.png"
+        srcset="/static/c246e3201a4db80a8c258453b783b98b/e9ff0/authorized_keys.png 180w,
+/static/c246e3201a4db80a8c258453b783b98b/f21e7/authorized_keys.png 360w,
+/static/c246e3201a4db80a8c258453b783b98b/37523/authorized_keys.png 720w,
+/static/c246e3201a4db80a8c258453b783b98b/302a4/authorized_keys.png 1080w,
+/static/c246e3201a4db80a8c258453b783b98b/68947/authorized_keys.png 1281w"
+        sizes="(max-width: 720px) 100vw, 720px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+        decoding="async"
+      />
+    </span></p>
+<p>이유는 모르겠지만 가지고 있던 private key와 안 맞는 public key가 들어있었다.</p>
+<p>나중에 OCI에서 온 메일에 따르면, 예약된 공용 IP를 가지고 있던 일부 무료티어 고객들이 리소스에 접근할 수 없는 문제가 생겼다고 한다. 😂<br>
+어쩐지 인스턴스 두 개 다 같은 문제가 생겨서 이해가 안갔는데 클라우드 문제였다니!</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 720px; "
+    >
+      <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 86.1111111111111%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAARCAYAAADdRIy+AAAACXBIWXMAAA7DAAAOwwHHb6hkAAADO0lEQVQ4y3WUS28bVRiGZ8GWBaJIiAWsEKIEsYUtQmLNsj+AsOwCQYUUJVIupg5qg0AIqgpBK/ELULuBNKJJiRzbtR2nMUl9i8czHntsj2fs2hPPmXnQObbTlMuRHr3fnMt7zpn5vtHW1taIx+Osr68rvXo1rnRldRU5try8TCwWY3X6LPV8vLi4yMLCAktLSwoNYDweEwQBQggVj0YjBoOBotfrMRwO6ff7Z8g+z/POVK6bNc3udHmQ2COZTJLJZNjd3VUUCgWy2Sz7+/uqP5/Pk8vl1Fi5XKbdbtNqtZSh3Fg23/fRRuUC3vYdzFabuq6rSc1mE9u2sSxLLfxnbJqmmjczlfPlaeUttVG3Tad0hNGw6Ha7DEcjAiEIRKhUiFBxFochQSAmiKeEUaRelyYnTFrEf7fof/j3nPH4FM0XglKmQOn+HrVUnkeFMsmjKsnDMtmiTtX2qLRchYxPbA+97VFuuRwYDgd1R42Z3QEj/xTtcWvARz8f8MGNHG/EE1y8lmLuelpx8Xqat2S8kebtjYe8eS3N61+leGUtwTtfP+Re0eGbBwavfrnHu99lsb0h2r7h8eFPh7z3Q54XVvZ4aTXJy7EkF1YSPL+0i/b59pQdtM+20T69j/bJJu/fyJHRPf4oObwWS/DcFzs03SHawB9z968Ov+Yt7hxY3H3UVPrbcZetSp/NkstmscfvxR6bpR5bJZd7FY8dOyTrhKQ7AVtNwZ/W6eTKyI9i6XhNA9c26bctei0D3+0gnrgwHkJ0CuE5ZP/N7+HHm/DLbfh2A7a3JoktgoBhMkW9pqvUkdTNBrphUpf5ZrfpOI7SVsumL9PlcRGhaYQvXiCcm1Nx8PG8+tZaKARPUilKx8dUqlVqtRrValWh67qqCsMwVBJbjQYD3wfbJpqfh8uXia5cgUuXiG7detawWiphmCaVSkWZSk5OThTSsNFoKJWmIoqeydCzOAynhskkR4eH1HRdlZgsp5nOkOUm+ySyxBCCaApBMImjCE3+Kfx0mqZp0ul2cV0Xx3FUGcprdjodhaxhqfIHoE40PSWz00bRU8NRoYBRq6krSWShS6S5VLnBbCOps8XnCcNQGf4Nt0ax0SJ6qsoAAAAASUVORK5CYII='); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="OCI로부터 온 이슈 메일"
+        title="OCI로부터 온 이슈 메일"
+        src="/static/1e38f9c9ca0ad0d792c77c34818a3fe0/37523/oci-issue-mail.png"
+        srcset="/static/1e38f9c9ca0ad0d792c77c34818a3fe0/e9ff0/oci-issue-mail.png 180w,
+/static/1e38f9c9ca0ad0d792c77c34818a3fe0/f21e7/oci-issue-mail.png 360w,
+/static/1e38f9c9ca0ad0d792c77c34818a3fe0/37523/oci-issue-mail.png 720w,
+/static/1e38f9c9ca0ad0d792c77c34818a3fe0/302a4/oci-issue-mail.png 1080w,
+/static/1e38f9c9ca0ad0d792c77c34818a3fe0/000c7/oci-issue-mail.png 1137w"
+        sizes="(max-width: 720px) 100vw, 720px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+        decoding="async"
+      />
+    </span></p>
+<p>다시 SSH 접속할 수 있도록 만들기 위해 새로운 SSH 키를 생성해야 한다.<br>
+<code class="language-text">ssh-keygen -t rsa</code>로 key pair를 생성했다.</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 720px; "
+    >
+      <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 52.222222222222214%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAYAAAC0VX7mAAAACXBIWXMAABJ0AAASdAHeZh94AAABGElEQVQoz6XS227DIAwGYE6JMacAodL6/k/pGzzhNto0aZvWXXwikEB+LKsxBpVS6DgOUWuVec6ZjqOIlBKFEMh7/7STR0cAlgAcOWdIKfUwboNzLnyOk1tv3HrnWivnnDnGyLlkefbes7OWrXDCGMvOOdbasFLq4TzPWWuda1xaazIvJc8Y40REkVKa1tqplPrZ7Xbj1hqPMfh+f+PeuyhHkYRLSkl49JIUEWX8DAAkvVofrmuFEGTzvu+8bdvj5XWNv1h/CwGlFmtBG/3aQZcdgGMMEnktmJVM/+NQjzgBYBprpKjGmKm0+r3437kKvBJqrV+v3UWauTXqZ382dKSUPHkEaeAYgXJGSgkJAKSxt237aOQv3gFMhdMo1z0DoAAAAABJRU5ErkJggg=='); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="터미널에서 새로운 SSH 키를 생성하는 모습"
+        title="터미널에서 새로운 SSH 키를 생성하는 모습"
+        src="/static/e6adc2ccb5f5bb367463ad99f0bd1925/37523/ssh-keygen.png"
+        srcset="/static/e6adc2ccb5f5bb367463ad99f0bd1925/e9ff0/ssh-keygen.png 180w,
+/static/e6adc2ccb5f5bb367463ad99f0bd1925/f21e7/ssh-keygen.png 360w,
+/static/e6adc2ccb5f5bb367463ad99f0bd1925/37523/ssh-keygen.png 720w,
+/static/e6adc2ccb5f5bb367463ad99f0bd1925/302a4/ssh-keygen.png 1080w,
+/static/e6adc2ccb5f5bb367463ad99f0bd1925/60a1a/ssh-keygen.png 1321w"
+        sizes="(max-width: 720px) 100vw, 720px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+        decoding="async"
+      />
+    </span></p>
+<p><code class="language-text">authorized_keys</code> 파일의 내용을 새로 생성한 public key로 바꾸고 private key는 따로 복사해둔다.<br>
+테스트용 인스턴스에서 해당 볼륨을 해제하고 원래 있던 인스턴스에 연결하면 복사해둔 private key로 SSH 접속을 할 수 있다! 🎉</p>
+<p>아래와 같은 경고가 있으니 테스트용 인스턴스를 앞으로도 사용할 예정이라면 마운트 해제와 접속 해제 명령을 꼭 해주자.</p>
+<blockquote>
+<p>분리 전 드라이브를 마운트 해제하고 접속 해제 명령을 실행해야 합니다. 아니면 인스턴스 재부팅을 실패합니다.</p>
+</blockquote>
+<h3 id="서버를-재부팅해도-디렉토리에-마운트된-상태-유지하기" style="position:relative;"><a href="#%EC%84%9C%EB%B2%84%EB%A5%BC-%EC%9E%AC%EB%B6%80%ED%8C%85%ED%95%B4%EB%8F%84-%EB%94%94%EB%A0%89%ED%86%A0%EB%A6%AC%EC%97%90-%EB%A7%88%EC%9A%B4%ED%8A%B8%EB%90%9C-%EC%83%81%ED%83%9C-%EC%9C%A0%EC%A7%80%ED%95%98%EA%B8%B0" aria-label="서버를 재부팅해도 디렉토리에 마운트된 상태 유지하기 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>서버를 재부팅해도 디렉토리에 마운트된 상태 유지하기</h3>
+<p><code class="language-text">fstab</code>에 등록해서 서버를 재부팅해도 디렉토리 마운트 상태를 유지할 수 있다.</p>
+<p>먼저 <code class="language-text">sudo blkid</code>로 UUID를 알아낸다.<br>
+blkid는 블록 아이디를 의미한다.</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 720px; "
+    >
+      <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 37.222222222222214%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAHCAYAAAAIy204AAAACXBIWXMAABJ0AAASdAHeZh94AAABB0lEQVQoz42RyXLEIAxEmTGLDUYswksOtvP/P9kp5MzkkENy6AJU1JO6pY7jQM4ZRARmlnspRUSJpP6qxUiIRKCU4L3HOI5wzmGaJnlba6BewJQTWmuozCi1oNZ6i6vU+58QAoiSNOn3cXQCfYE7VJ3n+Z6AW4fdgJQztNYiYwyezyeUUn/rvD6RSxEo8z3Vvu9Iif4H+AU8P1Brz+nOsFtclkUadAveTwjBwnd5ixAcwtxzMxgGBa1/NAwPqOta0VpEzhHrtordDm7LIidzAXMEN0JrhG3L2LYCognGKFirYN0trR99KSdq5bdlgX1D39lyQ0p94oB5jrLtEGYYa+HcKLL23vYXCPufNk1CE30AAAAASUVORK5CYII='); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="sbd1의 UUID"
+        title="sbd1의 UUID"
+        src="/static/ef5f786f5232057a6c5b5ba2c4c64572/37523/blkid.png"
+        srcset="/static/ef5f786f5232057a6c5b5ba2c4c64572/e9ff0/blkid.png 180w,
+/static/ef5f786f5232057a6c5b5ba2c4c64572/f21e7/blkid.png 360w,
+/static/ef5f786f5232057a6c5b5ba2c4c64572/37523/blkid.png 720w,
+/static/ef5f786f5232057a6c5b5ba2c4c64572/302a4/blkid.png 1080w,
+/static/ef5f786f5232057a6c5b5ba2c4c64572/d7e70/blkid.png 1286w"
+        sizes="(max-width: 720px) 100vw, 720px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+        decoding="async"
+      />
+    </span></p>
+<p>원하는 디스크의 UUID를 복사해서 <code class="language-text">fstab</code> 파일에 붙여넣어야 한다.<br>
+<code class="language-text">sudo vi /etc/fstab</code> 명령어로 <code class="language-text">fstab</code> 파일을 수정할 수 있다.</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 720px; "
+    >
+      <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 56.111111111111114%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAYAAAB/Ca1DAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA8klEQVQoz62R23KDMAxEVwZ8URIodqDt/3/odkxFx6Vkkoc+nFm8Qpq1DJSZyTsqwA7gJXim6OkcCIBQEB2YRjDF73+qP5j+QZAJ3I3ZyI2uBCYCnkAwrUQjNLU6UD4JjMZ0GLqfq8oJMHVNQikEEoEbATW9ELgao9W18bXpqd7QDny3FPXKbwSK6dUaJmsOJ7pfezDt24RmbMX+fOE/yOOz1GTrjVBtlhsPqKk/PEJsHsh8kdmW+mq6Jzj3YTsbbWf744QHaVvSibeZ+D/WdWUpmfdlYS6FS9WcN0opVFWKCLuu+4Vzjt77jfrd9z1DCPwCEdfjkiMdv44AAAAASUVORK5CYII='); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="fstab 파일"
+        title="fstab 파일"
+        src="/static/72dba26592ca34d49acf9df5e3a693e9/37523/vi-fstab.png"
+        srcset="/static/72dba26592ca34d49acf9df5e3a693e9/e9ff0/vi-fstab.png 180w,
+/static/72dba26592ca34d49acf9df5e3a693e9/f21e7/vi-fstab.png 360w,
+/static/72dba26592ca34d49acf9df5e3a693e9/37523/vi-fstab.png 720w,
+/static/72dba26592ca34d49acf9df5e3a693e9/302a4/vi-fstab.png 1080w,
+/static/72dba26592ca34d49acf9df5e3a693e9/68947/vi-fstab.png 1281w"
+        sizes="(max-width: 720px) 100vw, 720px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+        decoding="async"
+      />
+    </span></p>
+<p>위 파일을 아래처럼 복사한 UUID랑 디렉토리 주소를 넣어서 수정한다.</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 720px; "
+    >
+      <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 14.444444444444443%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAADCAYAAACTWi8uAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAXklEQVQI152OMRLCMAzAZKfBTliY+P9P1euViYGBQadRAtpBGWD+ICLMkWamSRo7pBCQRALz8lHhrvAJNlhfXh/mGPZa9mp7tvM95YVMZGE8sO7AIdnC9rqFuKt/cgLJtz08i5PHSQAAAABJRU5ErkJggg=='); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="fstab 파일에 UUID와 디렉토리 주소 추가"
+        title="fstab 파일에 UUID와 디렉토리 주소 추가"
+        src="/static/7f4f0408ffc71707fbb5e9b74dfa56b7/37523/vi-fstab-result.png"
+        srcset="/static/7f4f0408ffc71707fbb5e9b74dfa56b7/e9ff0/vi-fstab-result.png 180w,
+/static/7f4f0408ffc71707fbb5e9b74dfa56b7/f21e7/vi-fstab-result.png 360w,
+/static/7f4f0408ffc71707fbb5e9b74dfa56b7/37523/vi-fstab-result.png 720w,
+/static/7f4f0408ffc71707fbb5e9b74dfa56b7/302a4/vi-fstab-result.png 1080w,
+/static/7f4f0408ffc71707fbb5e9b74dfa56b7/68947/vi-fstab-result.png 1281w"
+        sizes="(max-width: 720px) 100vw, 720px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+        decoding="async"
+      />
+    </span></p>
+<p>인스턴스에서 알 수 없는 장애가 발생한 경우, 이런 식으로 해당 인스턴스의 부트볼륨을 분리해서 다른 인스턴스에 연결해 원인을 파악하고 문제를 해결할 수 있다.</p>
+<div class="table-of-contents">
+<ul>
+<li>
+<p><a href="#%EB%93%9C%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EB%B6%84%EB%A6%AC%ED%95%98%EA%B8%B0">드라이브 분리하기</a></p>
+</li>
+<li>
+<p><a href="#%EB%8B%A4%EB%A5%B8-%EC%9D%B8%EC%8A%A4%ED%84%B4%EC%8A%A4%EC%97%90-%EB%93%9C%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EC%97%B0%EA%B2%B0%ED%95%98%EA%B8%B0">다른 인스턴스에 드라이브 연결하기</a></p>
+</li>
+<li>
+<p><a href="#%EB%94%94%EB%A0%89%ED%86%A0%EB%A6%AC-%EB%A7%88%EC%9A%B4%ED%8A%B8%ED%95%98%EA%B8%B0">디렉토리 마운트하기</a></p>
+<ul>
+<li><a href="#%EC%84%9C%EB%B2%84%EB%A5%BC-%EC%9E%AC%EB%B6%80%ED%8C%85%ED%95%B4%EB%8F%84-%EB%94%94%EB%A0%89%ED%86%A0%EB%A6%AC%EC%97%90-%EB%A7%88%EC%9A%B4%ED%8A%B8%EB%90%9C-%EC%83%81%ED%83%9C-%EC%9C%A0%EC%A7%80%ED%95%98%EA%B8%B0">서버를 재부팅해도 디렉토리에 마운트된 상태 유지하기</a></li>
+</ul>
+</li>
+</ul>
+</div></div></div><div class="post-navigator"><div class="post-navigator-card-wrapper"><a class="post-card prev" href="/kruskals-algorithm/"><div class="direction">이전 글</div><div class="title">크루스칼 알고리즘</div></a></div><div class="post-navigator-card-wrapper"><a class="post-card next" href="/promise-async-await/"><div class="direction">다음 글</div><div class="title">Promise와 async/await</div></a></div></div><div class="utterances"></div></main><footer class="page-footer-wrapper"><div class="page-footer"><div>© <!-- -->2023<!-- --> <!-- -->이승헌</div><div class="social-links"><a class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall icon-tooltip css-1j7qk7u" tabindex="0" href="https://www.github.com/heony704" aria-label="github"><svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium icon css-vubbuv" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="GitHubIcon"><path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path></svg></a><a class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall icon-tooltip css-1j7qk7u" tabindex="0" href="mailto:heony704@gmail.com" aria-label="email"><svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium icon css-vubbuv" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="EmailIcon"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"></path></svg></a></div></div></footer><div class="dark-mode-button-wrapper"><button class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium dark-mode-button css-1yxmbwk" tabindex="0" type="button"><svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeLarge dark-mode-icon css-6flbmm" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DarkModeIcon"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"></path></svg></button></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/oci-ssh-error-troubleshooting/";window.___webpackCompilationHash="02b81bdc00f5b3f379c3";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"polyfill":["/polyfill-d5caba763a066566d519.js"],"app":["/app-65b817e16008e50978cd.js"],"component---cache-caches-gatsby-plugin-offline-app-shell-js":["/component---cache-caches-gatsby-plugin-offline-app-shell-js-1895688fc1d8c2afc666.js"],"component---src-pages-404-js":["/component---src-pages-404-js-f3eb1ecbb1a8d3c342e4.js"],"component---src-pages-about-js":["/component---src-pages-about-js-8a2567d2837eef954cb7.js"],"component---src-pages-index-js":["/component---src-pages-index-js-20322b89023526c4e104.js"],"component---src-templates-blog-template-js":["/component---src-templates-blog-template-js-7a1e13b210bf0dbdf5bb.js"],"component---src-templates-category-template-js":["/component---src-templates-category-template-js-25467c31ae06ff8b25e6.js"]};/*]]>*/</script><script src="/polyfill-d5caba763a066566d519.js" nomodule=""></script><script src="/app-65b817e16008e50978cd.js" async=""></script><script src="/framework-f22d2e4a925ed1cd71fb.js" async=""></script><script src="/webpack-runtime-711197701e96ffa1693f.js" async=""></script></body></html>
