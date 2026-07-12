@@ -157,6 +157,7 @@ span {
 }
 
 .post-article {
+  min-width: 0;
 }
 
 .post-header {
@@ -169,6 +170,7 @@ span {
   font-size: 32px;
   font-weight: 600;
   line-height: 1.15;
+  overflow-wrap: anywhere;
 }
 
 .post-header-time {
@@ -286,8 +288,10 @@ span {
 }
 
 .markdown-body {
+  min-width: 0;
   padding: 20px 0;
   font-size: 17px;
+  overflow-wrap: break-word;
 }
 
 .markdown-body h2,
@@ -331,6 +335,7 @@ span {
 }
 
 .markdown-body pre {
+  max-width: 100%;
   overflow-x: auto;
   padding: 18px;
   background: var(--code-bg);
