@@ -195,9 +195,9 @@ span {
 
 .other-posts {
   min-width: 0;
-  position: sticky;
-  top: 24px;
-  padding: 20px 0;
+  margin-top: 36px;
+  padding: 24px 0 0;
+  border-top: 1px solid var(--line);
 }
 
 .other-posts-title {
@@ -247,7 +247,9 @@ span {
 }
 
 .toc {
-  margin: 28px 0 36px;
+  position: sticky;
+  top: 24px;
+  margin: 20px 0;
   padding: 18px 20px;
   border-left: 4px solid var(--accent);
   background: var(--surface);
@@ -379,8 +381,7 @@ span {
     grid-template-columns: 1fr;
   }
 
-  .other-posts {
-    position: static;
-    padding-top: 0;
+  .toc {
+    display: none;
   }
 }
