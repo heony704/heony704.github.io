@@ -17,9 +17,10 @@ node_modules/
 # dotenv environment variable files
 .env*
 
-# gatsby files
-.cache/
-public
+# next files
+.next/
+out/
+public/
 
 # Mac files
 .DS_Store
