@@ -5,9 +5,11 @@ import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeRaw from 'rehype-raw';
 import rehypeSlug from 'rehype-slug';
-import rehypeHighlight from 'rehype-highlight';
+import rehypeShiki from '@shikijs/rehype';
+import type { RehypeShikiOptions } from '@shikijs/rehype';
 import rehypeStringify from 'rehype-stringify';
 import { visit } from 'unist-util-visit';
+import { shikiDark2026 } from './shiki-dark-2026';
 import { withBasePath } from './paths';
 
 type Heading = {
@@ -17,6 +19,16 @@ type Heading = {
 };
 
 const assetExtensions = /\.(png|jpe?g|gif|webp|avif|svg)$/i;
+const shikiOptions = {
+  theme: shikiDark2026,
+  langs: ['bash', 'c', 'css', 'html', 'javascript', 'json', 'jsx', 'nginx', 'scss', 'tsx', 'typescript'],
+  langAlias: {
+    conf: 'nginx',
+    js: 'javascript',
+    ts: 'typescript',
+  },
+  fallbackLanguage: 'text',
+} as unknown as RehypeShikiOptions;
 
 function isExternalUrl(value: string) {
   return /^(https?:)?\/\//.test(value) || value.startsWith('data:') || value.startsWith('#') || value.startsWith('mailto:');
@@ -104,7 +116,7 @@ export async function renderMarkdown(markdown: string, slug: string) {
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeRaw)
     .use(rehypeSlug)
-    .use(rehypeHighlight)
+    .use(rehypeShiki, shikiOptions)
     .use(rehypeStringify)
     .process(rewritten);
 
