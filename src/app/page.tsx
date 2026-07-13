@@ -1,9 +1,13 @@
-import Link from 'next/link';
+import { PostIndex } from '@/app/post-index';
 import { postPath, withBasePath } from '@/lib/paths';
 import { formatDate, getAllPosts } from '@/lib/posts';
 
 export default function HomePage() {
-  const posts = getAllPosts();
+  const posts = getAllPosts().map((post) => ({
+    ...post,
+    href: postPath(post.slug),
+    formattedDate: formatDate(post.date),
+  }));
 
   return (
     <div className="page-shell">
@@ -19,19 +23,7 @@ export default function HomePage() {
           <span className="post-heading-posts">{posts.length} posts</span>
         </div>
 
-        <ul className="post-list">
-          {posts.map((post) => (
-            <li key={post.slug}>
-              <Link className="post-list-item" href={postPath(post.slug)}>
-                <span className="post-list-title">{post.title}</span>
-                {post.excerpt ? <p className="post-list-content">{post.excerpt}</p> : null}
-                <time className="post-list-time" dateTime={post.date}>
-                  {formatDate(post.date)}
-                </time>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <PostIndex posts={posts} />
       </section>
     </div>
   );
