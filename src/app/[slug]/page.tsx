@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { OtherPosts } from '@/app/[slug]/other-posts';
 import { renderMarkdown } from '@/lib/markdown';
-import { formatDate, getAllSlugs, getOtherPosts, getPostBySlug } from '@/lib/posts';
+import { formatDate, getAllPosts, getAllSlugs, getPostBySlug } from '@/lib/posts';
 import { postPath } from '@/lib/paths';
 
 type PostPageProps = {
@@ -37,7 +37,11 @@ export default async function PostPage({ params }: PostPageProps) {
   }
 
   const post = getPostBySlug(slug);
-  const otherPosts = getOtherPosts(slug);
+  const otherPosts = getAllPosts().map((otherPost) => ({
+    ...otherPost,
+    href: postPath(otherPost.slug),
+    formattedDate: formatDate(otherPost.date),
+  }));
   const { html, headings } = await renderMarkdown(post.content, slug);
 
   return (
@@ -59,21 +63,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
         <div className="markdown-body" dangerouslySetInnerHTML={{ __html: html }} />
 
-        <section className="other-posts" aria-labelledby="other-posts-title">
-          <h2 className="other-posts-title" id="other-posts-title">
-            다른 글
-          </h2>
-          <ul>
-            {otherPosts.map((otherPost) => (
-              <li key={otherPost.slug}>
-                <Link href={postPath(otherPost.slug)}>
-                  <span>{otherPost.title}</span>
-                  <time dateTime={otherPost.date}>{formatDate(otherPost.date)}</time>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
+        <OtherPosts currentSlug={slug} posts={otherPosts} />
       </article>
 
       <aside className="post-aside">

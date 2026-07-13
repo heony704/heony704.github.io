@@ -305,7 +305,7 @@ span {
   list-style: none;
 }
 
-.other-posts a {
+.other-posts-item {
   display: block;
   padding: 16px;
   border: 1px solid var(--line);
@@ -314,8 +314,14 @@ span {
   text-decoration: none;
 }
 
-.other-posts a:hover {
+.other-posts a.other-posts-item:hover {
   border-color: var(--accent);
+}
+
+.other-posts-current {
+  position: relative;
+  border-color: var(--accent);
+  background: var(--accent-soft);
 }
 
 .other-posts time {
@@ -324,11 +330,23 @@ span {
   font-size: 14px;
 }
 
-.other-posts li span {
+.other-posts-item-title {
   display: block;
   font-weight: 600;
   font-size: 16px;
   line-height: 1.4;
+}
+
+.other-posts-current-label {
+  display: inline-flex;
+  margin-top: 10px;
+  padding: 1px 7px;
+  border-radius: 4px;
+  background: var(--accent);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.6;
 }
 
 .text-link {

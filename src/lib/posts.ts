@@ -81,10 +81,14 @@ export function getAllSlugs() {
   return getPostDirs();
 }
 
-export function getOtherPosts(currentSlug: string, limit = 12) {
-  return getAllPosts()
-    .filter((post) => post.slug !== currentSlug)
-    .slice(0, limit);
+export function getOtherPosts(currentSlug: string, limit?: number) {
+  const posts = getAllPosts().filter((post) => post.slug !== currentSlug);
+
+  if (typeof limit !== 'number') {
+    return posts;
+  }
+
+  return posts.slice(0, limit);
 }
 
 export function formatDate(date: string) {
