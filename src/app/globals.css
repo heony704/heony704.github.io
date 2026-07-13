@@ -38,31 +38,68 @@ span {
   margin: 0;
 }
 
-.site-header,
-.site-footer {
+.header,
+.footer {
   width: min(1120px, calc(100% - 32px));
   margin: 0 auto;
 }
 
-.site-header {
+.header {
   display: flex;
   align-items: center;
   min-height: 60px;
 }
 
-.site-title {
-  font-size: 20px;
-  font-weight: 700;
+.logo {
   text-decoration: none;
   user-select: none;
 }
 
-.site-footer {
+.logo span {
+  font-family: Manrope;
+  font-weight: 800;
+}
+
+.logo-strong {
+  color: #855300;
+}
+
+.footer {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  color: var(--muted);
+  color: #45464d;
+  height: 128px;
+}
+
+.footer-copyright-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-blog-name {
+  font-family: Manrope;
+  font-size: 13px;
+  color: #0b1c30;
+  font-weight: 500;
+}
+
+.footer-copyright {
+  font-family: Inter;
   font-size: 14px;
-  min-height: 72px;
+  font-weight: 500;
+}
+
+.footer-link-box {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-link-box a {
+  font-family: Inter;
+  font-size: 14px;
+  text-decoration: none;
+  font-weight: 500;
 }
 
 .page-shell {
@@ -76,8 +113,15 @@ span {
 }
 
 .home-hero {
-  min-height: 250px;
-  background: var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  user-select: none;
+}
+
+.home-hero img {
+  height: 100%;
 }
 
 .eyebrow {
@@ -100,7 +144,7 @@ span {
 }
 
 .post-heading-title {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 600;
 }
 
@@ -110,43 +154,46 @@ span {
 }
 
 .post-list {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 12px;
   padding: 0;
   margin: 0;
   list-style: none;
 }
 
-.post-list-item a {
-  display: block;
-  padding: 20px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  background: var(--surface);
+.post-list-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 36px;
   text-decoration: none;
 }
 
-.post-list-item a:hover {
+.post-list-item:hover {
   border-color: var(--accent);
 }
 
 .post-list-title {
-  display: block;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 1.25;
+}
+
+.post-list-content {
+  color: #45464d;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.625;
 }
 
 .post-list-time {
   display: block;
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.post-list-content {
-  margin: 8px 0 0;
-  color: var(--muted);
-  font-size: 14px;
+  color: #45464db3;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  font-family: 'JetBrains Mono';
 }
 
 .post-layout {
