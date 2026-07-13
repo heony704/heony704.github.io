@@ -47,47 +47,29 @@ export function PostIndex({ posts }: PostIndexProps) {
 
       {totalPages > 1 ? (
         <nav className="pagination" aria-label="Posts pagination">
-          {currentPage > 1 ? (
-            <button
-              type="button"
-              className="pagination-link pagination-step"
-              onClick={() => handlePageClick(currentPage - 1)}
-            >
-              Prev
-            </button>
-          ) : (
-            <span className="pagination-link pagination-step is-disabled">Prev</span>
-          )}
+          <button
+            type="button"
+            className="pagination-button"
+            aria-label="Previous page"
+            disabled={currentPage === 1}
+            onClick={() => handlePageClick(currentPage - 1)}
+          >
+            &lt;
+          </button>
 
-          <div className="pagination-pages">
-            {Array.from({ length: totalPages }, (_, index) => {
-              const page = index + 1;
+          <span className="pagination-status" aria-current="page">
+            {currentPage} / {totalPages}
+          </span>
 
-              return (
-                <button
-                  key={page}
-                  type="button"
-                  className={`pagination-link${page === currentPage ? ' is-current' : ''}`}
-                  aria-current={page === currentPage ? 'page' : undefined}
-                  onClick={() => handlePageClick(page)}
-                >
-                  {page}
-                </button>
-              );
-            })}
-          </div>
-
-          {currentPage < totalPages ? (
-            <button
-              type="button"
-              className="pagination-link pagination-step"
-              onClick={() => handlePageClick(currentPage + 1)}
-            >
-              Next
-            </button>
-          ) : (
-            <span className="pagination-link pagination-step is-disabled">Next</span>
-          )}
+          <button
+            type="button"
+            className="pagination-button"
+            aria-label="Next page"
+            disabled={currentPage === totalPages}
+            onClick={() => handlePageClick(currentPage + 1)}
+          >
+            &gt;
+          </button>
         </nav>
       ) : null}
     </>
