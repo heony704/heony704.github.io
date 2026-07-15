@@ -27,7 +27,12 @@ export function PostIndex({ posts }: PostIndexProps) {
 
   const handlePageClick = (page: number) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.requestAnimationFrame(() => {
+      document.getElementById('post-index')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    });
   };
 
   return (

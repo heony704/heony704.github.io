@@ -49,7 +49,7 @@ function makeExcerpt(content: string) {
     .replace(/[#>*_`[\]()!-]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim()
-    .slice(0, 160);
+    .slice(0, 250);
 }
 
 export function getPostBySlug(slug: string): Post {

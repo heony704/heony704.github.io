@@ -15,7 +15,7 @@ export default function HomePage() {
         <img src={withBasePath('/banner/maxwell-cat.gif')} alt="Maxwell cat" />
       </section>
 
-      <section className="post-index" aria-labelledby="post-heading-title">
+      <section className="post-index" id="post-index" aria-labelledby="post-heading-title">
         <div className="post-heading">
           <h2 className="post-heading-title" id="post-heading-title">
             전체 게시글
