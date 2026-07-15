@@ -180,6 +180,21 @@ span {
   line-height: 1.25;
 }
 
+.post-list-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.post-list-categories span {
+  padding: 0 6px;
+  border-radius: 4px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+}
+
 .post-list-content {
   color: #45464d;
   font-size: 16px;

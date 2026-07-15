@@ -9,6 +9,7 @@ type PostIndexItem = {
   slug: string;
   title: string;
   date: string;
+  categories: string[];
   excerpt: string;
   href: string;
   formattedDate: string;
@@ -35,6 +36,13 @@ export function PostIndex({ posts }: PostIndexProps) {
         {visiblePosts.map((post) => (
           <li key={post.slug}>
             <Link className="post-list-item" href={post.href}>
+              {post.categories.length ? (
+                <span className="post-list-categories">
+                  {post.categories.map((category) => (
+                    <span key={category}>{category}</span>
+                  ))}
+                </span>
+              ) : null}
               <span className="post-list-title">{post.title}</span>
               {post.excerpt ? <p className="post-list-content">{post.excerpt}</p> : null}
               <time className="post-list-time" dateTime={post.date}>
