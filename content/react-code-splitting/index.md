@@ -20,7 +20,7 @@ React 프로젝트를 최적화하는 방법 중 코드 분할과 지연 로딩�
 
 내 투두리스트 프로젝트에서도 투두리스트 페이지에 들어가든, 로그인/회원가입 페이지에 들어가든 `main.어쩌구저쩌구.js`라는 똑같은 하나의 빌드 파일을 로드한다.
 
-![코드 분할 전 빌드 파일](build-file-before-code-splitting.png)
+<img src="build-file-before-code-splitting.png" alt="코드 분할 전 빌드 파일" width="600">
 
 투두리스트 페이지에 들어가도 불필요한 로그인 기능까지 같이 로드되는 것이다.
 
@@ -31,7 +31,7 @@ React 프로젝트를 최적화하는 방법 중 코드 분할과 지연 로딩�
 그래서 빌드 파일 안이 도대체 어떻게 생겼는데?  
 불필요한 코드가 있는지 한번 직접 알아보자.
 
-![빌드 파일 소스코드](build-file-source-code.png)
+<img src="build-file-source-code.png" alt="빌드 파일 소스코드" width="600">
 
 잘 모르겠다.
 
@@ -40,7 +40,7 @@ React 프로젝트를 최적화하는 방법 중 코드 분할과 지연 로딩�
 그래서 빌드 파일을 분석해주는 `webpack-bundle-analyzer`와 `cra-bundle-analyzer` 라이브러리를 사용했다.  
 라이브러리를 devDepenencies로 설치하고 명령어 `npx cra-bundle-analyzer`를 실행하면 다음과 같이 빌드 파일을 시각적으로 분석해준다.
 
-![통합된 빌드 파일의 분석 결과](build-file-analysis-before-code-splitting.png)
+<img src="build-file-analysis-before-code-splitting.png" alt="통합된 빌드 파일의 분석 결과" width="500">
 
 커다란 하나만 있는 건 잘못된 게 아니다.  
 따로 코드를 분할하지 않아 빌드 파일이 하나로 통합되어서 그런 것이다.
@@ -117,13 +117,13 @@ export default function App() {
 
 코드가 분할되었는지 `cra-bundle-analyzer`로 확인해보자.
 
-![코드 분할 후 빌드 파일의 분석 결과](build-file-analysis-after-code-splitting.png)
+<img src="build-file-analysis-after-code-splitting.png" alt="코드 분할 후 빌드 파일의 분석 결과" width="500">
 
 전과 다르게 빌드 파일이 여러 개로 쪼개져 있다.
 
 직접 웹사이트에 들어가 네트워크 탭을 확인하면 투두리스트에 필요한 코드만 로드된 걸 확인할 수 있다.
 
-![코드 분할 후 빌드 파일](build-file-after-code-splitting.png)
+<img src="build-file-after-code-splitting.png" alt="코드 분할 후 빌드 파일" width="600">
 
 ## 코드 분할 결과
 

@@ -15,7 +15,7 @@ React Redux를 어떻게 적용했는지, Context API와 React Redux는 무엇�
 Redux는 action이라고 불리는 이벤트를 사용해 상태를 관리하는 패턴이며, React Redux는 Redux를 React에서 사용할 수 있는 라이브러리이다.  
 React Redux는 Redux store에 상태를 저장하고 action을 dispatch해서 store의 상태를 변경한다.
 
-![Redux 구조](redux-structure.png)
+<img src="redux-structure.png" alt="Redux 구조" width="500">
 
 React Redux는 현재 React에서 지정한 공식 Redux UI 바인딩이다.  
 만약 React를 사용중이며 UI 바인딩에 Redux 개념을 이용하고 싶다면 React Redux 라이브러리가 가장 권장된다는 뜻이다.
@@ -146,14 +146,14 @@ Context + useReducer보다 React Redux + Redux Toolkit이 코드 작성하기 �
 
 Context API는 상태를 만들 때마다 Provider를 만들고 중첩해야해서 복잡했는데 React Redux는 짧은 코드로 하나의 Provider로 만들 수 있어 매우 편했다.
 
-<p style="display:flex">
-  <img src="context-provider.png" alt="Context API의 복잡한 Provider들">
-  <img src="redux-provider.png" alt="React Redux의 단 한개의 Provider">
+<p class="image-row">
+  <img src="context-provider.png" alt="Context API의 복잡한 Provider들" width="250">
+  <img src="redux-provider.png" alt="React Redux의 단 한개의 Provider" width="250">
 </p>
 
 React Redux는 Redux DevTools로 상태 변경을 추적할 수 있어 편했다.
 
-![Redux Devtools 확장프로그램](redux-devtools.png)
+<img src="redux-devtools.png" alt="Redux Devtools 확장프로그램" width="600">
 
 React Redux는 기본적인 성능 최적화를 구현했기 때문에 action을 dispatch해도 store 값이 변하지 않았더라면 store 값을 사용하는 컴포넌트가 리렌더링되지 않는다.  
 하지만 이건 store 값에 대한 얘기고, useState 훅 같이 React의 상태관리는 상태 업데이트만으로도 여전히 리렌더링을 유발한다.

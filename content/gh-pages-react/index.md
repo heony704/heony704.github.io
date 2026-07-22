@@ -30,13 +30,13 @@ GitHub repository에 코드를 올리고 몇가지 설정만 해주면 무료로
 그럼 어디서 설정할 수 있는지 알아봅시다.  
 설정하고 싶은 레포지토리에 들어가서 `Settings`에 들어갑니다.
 
-![Github Repository 화면](github-repository.png)
+<img src="github-repository.png" alt="Github Repository 화면" width="800">
 
 `Pages`에 들어가서 `Source`를 확인하면 현재 GitHub Pages가 비활성화되어 있다고 표시됩니다.  
 GitHub Pages를 활성화하려면 바로 아래 `None`이라 표시된 부분을 특정 branch로 설정해야 합니다.  
 그 branch의 코드가 호스팅되기 때문입니다.
 
-![Github Pages 메뉴](github-pages.png)
+<img src="github-pages.png" alt="Github Pages 메뉴" width="800">
 
 호스팅될 사이트 주소를 알아내기 위해 `Source`에서 `None` 말고 아무 branch나 눌러서 확인합니다.  
 보통 사이트 주소는 `https://ID이름.github.io/repository이름`으로 정해집니다.
@@ -79,7 +79,7 @@ React 프로젝트의 `package.json` 파일의 다음 부분을 수정해줍니�
 }
 ```
 
-![package.json 파일](package-json.png)
+<img src="package-json.png" alt="package.json 파일" width="700">
 
 ### 배포하기
 
@@ -104,7 +104,7 @@ yarn deploy
 배포가 성공적으로 완료되었다면 gh-pages 브랜치가 새로 생깁니다.  
 `Source`의 branch를 gh-pages로 설정해줍니다.
 
-![Github Pages 메뉴에서 branch를 gh-pages로 설정한 모습](github-pages-after.png)
+<img src="github-pages-after.png" alt="Github Pages 메뉴에서 branch를 gh-pages로 설정한 모습" width="800">
 
 이렇게 Github Pages 기능을 이용해 무료로 웹 호스팅을 했습니다. 🥳
 

@@ -21,7 +21,7 @@ Same-Origin Policy
 
 두 URL의 프로토콜, 도메인 이름, 포트(명시한 경우) 가 모두 같아야 동일한 출처다.
 
-![URL 구조](url-structure.png)
+<img src="url-structure.png" alt="URL 구조" width="700">
 
 `http://store.company.com`과 동일한 출처는 다음과 같다.
 

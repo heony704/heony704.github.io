@@ -40,7 +40,7 @@ ppk 형식이 아니라면 사용할 수 없으므로 pem 파일은 ppk 파일�
 
 ### 3. Open 버튼을 눌러 접속하기
 
-![PuTTY 접속 후 터미널 화면](putty3-1.png)
+<img src="putty3-1.png" alt="PuTTY 접속 후 터미널 화면" width="600">
 
 **PuTTY Key Generator (PuTTYgen)을 사용하여 pem 파일을 ppk 파일로 변환하기**
 
@@ -58,7 +58,7 @@ ppk 형식이 아니라면 사용할 수 없으므로 pem 파일은 ppk 파일�
 
 `Xshell 6(Free for Home/School)`를 사용했습니다.
 
-![Xshell 6 화면](xshell.png)
+<img src="xshell.png" alt="Xshell 6 화면" width="700">
 
 ### 1. 새 세션 만들기
 
@@ -76,7 +76,7 @@ PuTTYgen을 사용하지 않아도 된다는 점이 마음에 듭니다.
 
 ### 3. 접속하기
 
-![Xshell 접속 성공 화면](xshell3.png)
+<img src="xshell3.png" alt="Xshell 접속 성공 화면" width="700">
 
 주변에 PuTTY를 쓰는 사람이 많은데 개인적으로 pem 파일도 가능하다는 점에서 Xshell이 더 편했습니다.
 

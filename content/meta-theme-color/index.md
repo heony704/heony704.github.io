@@ -8,9 +8,9 @@ categories: html
 리액트 웹사이트를 만든 후 디바이스별로 스타일이 잘 적용되었는지 확인하던 중 이상한 현상을 발견했다.  
 아이폰에서 사파리로 내가 만든 웹사이트를 접속하면 다른 여타 사이트들과 달리 상단바가 까맣게 표시되어서 매우 거슬렸다.
 
-<p style="display:flex">
-  <img src="safari-themecolor-black.jpg" alt="사파리 상단바가 까맣게 표시된 모습">
-  <img src="safari-themecolor-none.jpg" alt="사파리 상단바가 까맣지 않은 모습">
+<p class="image-row">
+  <img src="safari-themecolor-black.jpg" alt="사파리 상단바가 까맣게 표시된 모습" width="250">
+  <img src="safari-themecolor-none.jpg" alt="사파리 상단바가 까맣지 않은 모습" width="250">
 </p>
 
 그래서 무엇이 문제인지 알아봤다.
@@ -33,9 +33,9 @@ categories: html
 `<meta name="theme-color" content="#000000" />`를 제거하고 나면 내 웹사이트에 접속할 때 다른 웹사이트처럼 상단바의 색이 자연스럽게 표시된다.  
 라이트모드, 다크모드 둘 다 페이지의 배경색에 맞춰 색이 적용됐다.
 
-<p style="display:flex">
-  <img src="mypage-lightmode.jpg" alt="라이트모드의 웹사이트 모습">
-  <img src="mypage-darkmode.jpg" alt="다크모드의 웹사이트 모습">
+<p class="image-row">
+  <img src="mypage-lightmode.jpg" alt="라이트모드의 웹사이트 모습" width="250">
+  <img src="mypage-darkmode.jpg" alt="다크모드의 웹사이트 모습" width="250">
 </p>
 
 지금부터 이렇게 된 이유에 대해 알아보자.
@@ -47,7 +47,7 @@ categories: html
 
 아이폰 설정에서 사파리 탭에 들어가 기능을 끄거나 켤 수 있다.
 
-![아이폰 설정 화면](iphone-safari-setting.jpg)
+<img src="iphone-safari-setting.jpg" alt="아이폰 설정 화면" width="250">
 
 자세한 동작 원리는 모르겠지만 상단바를 어떤 색조로 물들일지는 다음에 의해 정해지는 것 같다.
 

@@ -15,7 +15,7 @@ URL은 웹에 게시된 어떤 자원(리소스)를 찾기 위해서 브라우�
 
 ## URL의 구조
 
-![URL 구조](url-structure.png)
+<img src="url-structure.png" alt="URL 구조" width="700">
 
 ### Protocol
 

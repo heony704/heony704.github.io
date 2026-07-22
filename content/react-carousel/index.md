@@ -15,7 +15,7 @@ React로 캐러셀을 만들어보자.
 
 백문이 불여일견. 애플 홈페이지에 들어가 보자.
 
-![애플 홈페이지의 Carousel](apple-carousel.gif)
+<img src="apple-carousel.gif" alt="애플 홈페이지의 Carousel" width="800">
 
 이런 식으로
 
@@ -28,7 +28,7 @@ React로 캐러셀을 만들어보자.
 
 다양한 캐러셀들이 있지만 아래와 같이 간단한 모양의 캐러셀을 만들 것이다.
 
-![내가 만든 Carousel](my-carousel.gif)
+<img src="my-carousel.gif" alt="내가 만든 Carousel" width="550">
 
 내가 만들 캐러셀의 특징은 이렇다.
 
@@ -56,7 +56,7 @@ React로 캐러셀을 만들어보자.
 }
 ```
 
-![만든 div의 모습](first-step.png)
+<img src="first-step.png" alt="만든 div의 모습" width="500">
 
 이제 이 네모 안에 사진들을 넣을 것이다.
 
@@ -114,7 +114,7 @@ React로 캐러셀을 만들어보자.
 }
 ```
 
-![div에 사진이 나타난 모습](second-step.png)
+<img src="second-step.png" alt="div에 사진이 나타난 모습" width="400">
 
 화면상에는 첫번째 사진만 나타나지만, 보이지 않는 오른쪽 공간에 다른 사진 두개가 숨어있다.
 
@@ -326,6 +326,8 @@ const App = () => {
 ```
 
 ![완성된 Carousel](third-step.gif)
+
+<img src="third-step.gif" alt="완성된 Carousel" width="550">
 
 ### margin-left 대신 transform 속성 사용하기
 
