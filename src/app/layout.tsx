@@ -5,10 +5,10 @@ import { withBasePath } from '@/lib/paths';
 
 export const metadata: Metadata = {
   title: {
-    default: 'heony704 blog',
-    template: '%s | heony704 blog',
+    default: 'heony704.logs',
+    template: '%s | heony704.logs',
   },
-  description: 'heony704 blog',
+  description: 'heony704의 블로그',
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
