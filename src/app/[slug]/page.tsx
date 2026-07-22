@@ -48,10 +48,6 @@ export default async function PostPage({ params }: PostPageProps) {
     <div className="page-shell post-layout">
       <article className="post-article">
         <header className="post-header">
-          <h1 className="post-header-title">{post.title}</h1>
-          <time className="post-header-time" dateTime={post.date}>
-            {formatDate(post.date)}
-          </time>
           {post.categories.length ? (
             <div className="category-row">
               {post.categories.map((category) => (
@@ -59,6 +55,10 @@ export default async function PostPage({ params }: PostPageProps) {
               ))}
             </div>
           ) : null}
+          <h1 className="post-header-title">{post.title}</h1>
+          <time className="post-header-time" dateTime={post.date}>
+            {formatDate(post.date)}
+          </time>
         </header>
 
         <div className="markdown-body" dangerouslySetInnerHTML={{ __html: html }} />
