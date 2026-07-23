@@ -581,7 +581,7 @@ span {
 }
 
 @media (max-width: 1500px) {
-  .toc {
+  .post-aside {
     display: none;
   }
 }
