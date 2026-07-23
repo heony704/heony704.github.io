@@ -555,7 +555,6 @@ span {
 
 .markdown-body pre code {
   display: block;
-  min-width: max-content;
   padding: 0;
   background: transparent;
 }
