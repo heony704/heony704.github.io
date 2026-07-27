@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import './globals.css';
 import { createPreviewMetadata, siteDescription, siteName, siteUrl } from '@/lib/metadata';
 import { withBasePath } from '@/lib/paths';
@@ -27,10 +26,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="ko">
       <body>
         <header className="header">
-          <Link href={withBasePath('/')} className="logo">
+          <a href={withBasePath('/')} className="logo">
             <span className="logo-strong">heony704</span>
             <span>.logs</span>
-          </Link>
+          </a>
         </header>
 
         <main>{children}</main>
