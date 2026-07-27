@@ -93,10 +93,11 @@ span {
   justify-content: space-between;
   align-items: center;
   color: rgb(var(--gray-700));
-  background: rgb(var(--gray-50));
+  border-top: 1px solid rgb(var(--gray-50));
+  background: rgb(var(--bg));
   width: 100%;
   margin: 0;
-  padding: 60px max(16px, calc((100% - var(--content-width)) / 2));
+  padding: 40px max(16px, calc((100% - var(--content-width)) / 2));
 }
 
 .footer-copyright-box {
