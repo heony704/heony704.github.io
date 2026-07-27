@@ -4,7 +4,7 @@ import { withBasePath } from '@/lib/paths';
 export const siteName = 'heony704.logs';
 export const siteDescription = 'heony704의 블로그';
 export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://heony704.github.io';
-export const ogImagePath = '/hello-world.webp';
+export const ogImagePath = '/hello-world.png';
 
 export function absoluteUrl(path: string) {
   return new URL(withBasePath(path), siteUrl).toString();
@@ -38,7 +38,7 @@ export function createPreviewMetadata({
         {
           url: imageUrl,
           alt: siteName,
-          type: 'image/webp',
+          type: 'image/png',
         },
       ],
     },
