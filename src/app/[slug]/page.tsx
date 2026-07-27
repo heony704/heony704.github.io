@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { OtherPosts } from '@/app/[slug]/other-posts';
+import { createPreviewMetadata } from '@/lib/metadata';
 import { renderMarkdown } from '@/lib/markdown';
 import { formatDate, getAllPosts, getAllSlugs, getPostBySlug } from '@/lib/posts';
 import { postPath } from '@/lib/paths';
@@ -23,9 +24,17 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
   }
 
   const post = getPostBySlug(slug);
+  const previewDescription = post.excerpt ? `${post.excerpt.slice(0, 100).trimEnd()}...` : post.excerpt;
+
   return {
     title: post.title,
-    description: post.excerpt,
+    description: previewDescription,
+    ...createPreviewMetadata({
+      title: post.title,
+      description: previewDescription,
+      path: `/${slug}/`,
+      type: 'article',
+    }),
   };
 }
 

@@ -1,14 +1,25 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import './globals.css';
+import { createPreviewMetadata, siteDescription, siteName, siteUrl } from '@/lib/metadata';
 import { withBasePath } from '@/lib/paths';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
-    default: 'heony704.logs',
-    template: '%s | heony704.logs',
+    default: siteName,
+    template: `%s | ${siteName}`,
   },
-  description: 'heony704의 블로그',
+  description: siteDescription,
+  applicationName: siteName,
+  authors: [{ name: 'heony704' }],
+  creator: 'heony704',
+  publisher: 'heony704',
+  ...createPreviewMetadata({
+    title: siteName,
+    description: siteDescription,
+    path: '/',
+  }),
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
